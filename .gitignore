@@ -1,0 +1,62 @@
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE and editor files
+*.project
+*.swo
+*.swp
+*.sublime-project
+*.sublime-workspace
+.vscode/
+.idea/
+*.tmproj
+
+# Node modules (for JavaScript/TypeScript projects)
+node_modules/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Compiled files (for languages like C, C++, and Java)
+*.class
+*.o
+*.a
+*.so
+
+# Java
+*.jar
+*.war
+*.ear
+*.iml
+*.ipr
+*.iws
+
+# Backup files (often created by editors)
+*~
+*.bak
+
+# Build directories
+build/
+dist/
+
+# Environment files
+.env
+
+# Others
+*.log
+*.pid
+*.seed
+*.pid.lock
+
