@@ -22,10 +22,9 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-
-  gap: 1vh;
-
   width: 100vw;
+
+  gap: 5vh;
 `
 
 const WorkoutContainer = styled.div`
@@ -100,7 +99,7 @@ const LandingBannerDescription = styled.div`
 `
 
 const GetStartedButton = styled.button`
-  width: 200px;
+  width: 170px;
 
   margin-top: 2vh;
   border-radius: 10px;
@@ -114,6 +113,35 @@ const GetStartedButton = styled.button`
 
   cursor: pointer;
 `
+const ProgressBanner = styled.div`
+  width: 90vw;
+
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+`
+
+const ProgressBannerTitle = styled.div`
+  
+`
+
+const ProgressBannerBoxContainer = styled.div`
+  width: 90vw;
+
+  display: flex;
+  gap: 5vw;
+`
+
+const ProgressBannerBox = styled.div`
+  border: 1px solid black;
+  border-radius: 10px;
+
+  flex: 1 1 0;
+
+  font-weight: bold;
+  text-align: center;
+`
+
 function App() {
 
   const [workoutData, setWorkoutData] = React.useState<WorkoutDataSingle[]>([])
@@ -164,33 +192,54 @@ function App() {
       <Navbar />
       <Wrapper>
 
-      <LandingBanner>
+        <LandingBanner>
 
-        <LandingBannerWelcome>
-          BLACK SHEEP
-        </LandingBannerWelcome>
+          <LandingBannerWelcome>
+            BLACK SHEEP
+          </LandingBannerWelcome>
 
-        <LandingBannerTitle>
-          Fit(ness) for you
-        </LandingBannerTitle>
+          <LandingBannerTitle>
+            Fit(ness) for you
+          </LandingBannerTitle>
 
-        <LandingBannerDescription>
-          <div>Lost in the gym or super busy?</div>
-          <div>Start with a workout that fits you.</div>
-          <GetStartedButton>
-            Get Started
-          </GetStartedButton>
-        </LandingBannerDescription>
-
-
-      </LandingBanner>
+          <LandingBannerDescription>
+            <div>Lost in the gym or super busy?</div>
+            <div>Start with a workout that fits you.</div>
+            <GetStartedButton>
+              Get Started ➜
+            </GetStartedButton>
+          </LandingBannerDescription>
 
 
-      {
-        workouts.map((workout, idx)=>{
-          return (
-            <>
-              <WorkoutContainer>
+        </LandingBanner>
+
+        <ProgressBanner>
+          <ProgressBannerTitle>
+            Share your progress!
+          </ProgressBannerTitle>
+
+          <ProgressBannerBoxContainer>
+            <ProgressBannerBox>
+              NIKE RUN APP
+            </ProgressBannerBox>
+            <ProgressBannerBox>
+              PROGRAM COMPLETED: FULL BODY
+            </ProgressBannerBox>
+            <ProgressBannerBox>
+              PROGRAM COMPLETED: PPL
+            </ProgressBannerBox>
+          </ProgressBannerBoxContainer>
+        </ProgressBanner>
+
+
+
+
+
+        <WorkoutContainer>
+        {
+          workouts.map((workout, idx: number )=>{
+            return (
+              <>
                 <Workout>
                   {workout.workout_name}
                 </Workout>
@@ -200,11 +249,12 @@ function App() {
                 <Workout>
                   {workout.workout_name}
                 </Workout>
-              </WorkoutContainer >
-            </>
-          )
-        })
-      }
+              </>
+            )
+          })
+        }
+
+        </WorkoutContainer>
       </Wrapper>
     </>
   )
