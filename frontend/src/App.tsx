@@ -175,7 +175,7 @@ function App() {
         </LandingBannerTitle>
 
         <LandingBannerDescription>
-          <div>Lost in the gym or super busy</div>
+          <div>Lost in the gym or super busy?</div>
           <div>Start with a workout that fits you.</div>
           <GetStartedButton>
             Get Started
