@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 
+import Navbar from './components/Navbar'
+
 // Declare the structure of WorkoutData
 type WorkoutDataSingle = {
   workout_name: string;
@@ -20,10 +22,7 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding-top: 5vh;
-  padding-left: 2vw;
-  padding-right: 2vw;
-  padding-bottom: 2vh;
+
   gap: 1vh;
 
   width: 100vw;
@@ -64,26 +63,18 @@ const LandingBanner = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 
   background: linear-gradient(160deg, #FFA07A 0%, #C8A2C8 35%, #9BB7D4 55%, #40E0D0 100%);
   width: 100vw;
-  height: 80vh;
-  border-radius: 10px;
+  height: 60vh;
 `
-
-const LandingBannerText = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-`
-
 const LandingBannerTitle = styled.div`
   font-family: 'Inter', sans-serif;
   font-weight: 700;
-  font-size: 5rem;
+  font-size: 4rem;
   color: white;
-  width: 30vw;
+  width: 90%;
 `
 
 const LandingBannerWelcome = styled.div`
@@ -93,40 +84,36 @@ const LandingBannerWelcome = styled.div`
   font-size: 1rem;
   color: white;
 
-  width: 30vw;
+  width: 90%;
 `
 
 const LandingBannerDescription = styled.div`
   font-family: 'Inter', sans-serif;
   font-weight: 400;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   color: white;
-
-  width: 30vw;
-`
-
-const LandingPhoneContainer = styled.div`
-  width: 30vw;
-  height: 60vh;
+  width: 90%;
 
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
 `
 
-const LandingPhone = styled.div`
-  
+const GetStartedButton = styled.button`
+  width: 200px;
+
+  margin-top: 2vh;
+  border-radius: 10px;
+  border: none;
+
   background: white;
 
-  border: 1px solid grey;
-  border-radius: 15px;
+  &:hover {
+    background: lightgrey;
+  }
 
-  height: 42vh;
-  width: 12vw;
-
-  text-align: center;
+  cursor: pointer;
 `
-
 function App() {
 
   const [workoutData, setWorkoutData] = React.useState<WorkoutDataSingle[]>([])
@@ -174,30 +161,26 @@ function App() {
 
   return (
     <>
-     <Wrapper>
+      <Navbar />
+      <Wrapper>
 
       <LandingBanner>
 
-        <LandingBannerText>
-          <LandingBannerWelcome>
-            BLACK SHEEP
-          </LandingBannerWelcome>
+        <LandingBannerWelcome>
+          BLACK SHEEP
+        </LandingBannerWelcome>
 
-          <LandingBannerTitle>
-            Fit(ness) for your schedule
-          </LandingBannerTitle>
+        <LandingBannerTitle>
+          Fit(ness) for you
+        </LandingBannerTitle>
 
-          <LandingBannerDescription>
-            Find a workout that fits you.
-          </LandingBannerDescription>
-        </LandingBannerText>
-
-        <LandingPhoneContainer>
-          <LandingPhone>
-            me phone
-          </LandingPhone>
-        </LandingPhoneContainer>
-
+        <LandingBannerDescription>
+          <div>Lost in the gym or super busy</div>
+          <div>Start with a workout that fits you.</div>
+          <GetStartedButton>
+            Get Started
+          </GetStartedButton>
+        </LandingBannerDescription>
 
 
       </LandingBanner>
