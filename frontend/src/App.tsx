@@ -178,17 +178,40 @@ const ProgressTitle = styled.div`
 
 const AboutUsBanner = styled.div`
   
+  width: 90vw;
+
+
+  color: white;
 `
 
 const AboutUsTitle = styled.div`
-  
+  color: #4A4A4A;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-weight: bold;
+
+  font-size: 1.5rem;
 `
 
 const AboutUsDescription = styled.div`
+  background: linear-gradient(160deg, black 0%, #333333 70%);
+  padding: 5vw;
+  border-radius: 15px;
 `
 
 const AboutUsSlogan = styled.div`
-  
+  color: #4A4A4A;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-weight: bold;
+
+  font-size: 1rem;
 `
 
 function App() {
@@ -262,7 +285,21 @@ function App() {
 
         </LandingBanner>
 
+        <AboutUsBanner>
+          <AboutUsTitle>
+            WHY BLACK SHEEP?
+          </AboutUsTitle>
+          <AboutUsDescription>
+            We stand out. We understand everyone has the same hours in a day, but those hours will be spent differently.
 
+            With us, you will find a workout that fits your goals and your schedule. No such thing as perfect for you.
+          </AboutUsDescription>
+
+          <AboutUsSlogan>
+            Avoid the Noise. Find your Flock
+          </AboutUsSlogan>
+
+        </AboutUsBanner>
 
         {/* <ProgressBanner>
           <ProgressBannerTitle>
