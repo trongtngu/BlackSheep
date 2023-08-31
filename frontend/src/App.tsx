@@ -3,6 +3,12 @@ import styled from 'styled-components'
 
 import Navbar from './components/Navbar'
 
+// Styled Prop Types:
+
+type StyledProps = {
+  hybrid?: string;
+}
+
 // Declare the structure of WorkoutData
 type WorkoutDataSingle = {
   workout_name: string;
@@ -29,15 +35,31 @@ const Wrapper = styled.div`
 
 const WorkoutContainer = styled.div`
   flex: 1 1 1;
-  height: 80vh;
-  display: flex;
-  align-items: center;
 
-  flex-direction: column;
+  display: flex;
+
   gap: 3vh;
+  
+  max-width: 100vw;
+  padding-left: 5vw;
+  padding-right: 5vw;
+  overflow-x: auto;
+  padding-bottom: 2vh;
 `
 
-const Workout = styled.div`
+const WorkoutContainerTitle = styled.div`
+  color: #4A4A4A;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-weight: bold;
+
+  font-size: 1.5rem;
+`
+
+const Workout = styled.div<StyledProps>`
   flex: 1 1 1;
   
   border: 1px solid lightgrey;
@@ -51,11 +73,14 @@ const Workout = styled.div`
   border-radius: 10px;
 
   background: #FFA07A;
+  background: ${props => props.hybrid === 'hybrid' ? '#40E0D0' : "#FFA07A"};
 
   font-family: 'Inter', sans-serif;
   font-weight: 700;
   font-size: 2rem;
   color: white;
+
+  min-width: 60vw;
 `
 
 const LandingBanner = styled.div`
@@ -66,7 +91,7 @@ const LandingBanner = styled.div`
 
   background: linear-gradient(160deg, #FFA07A 0%, #C8A2C8 35%, #9BB7D4 55%, #40E0D0 100%);
   width: 100vw;
-  height: 60vh;
+  height: 90vh;
 `
 const LandingBannerTitle = styled.div`
   font-family: 'Inter', sans-serif;
@@ -102,7 +127,7 @@ const GetStartedButton = styled.button`
   width: 170px;
 
   margin-top: 2vh;
-  border-radius: 10px;
+  border-radius: 5px;
   border: none;
 
   background: white;
@@ -114,37 +139,50 @@ const GetStartedButton = styled.button`
   cursor: pointer;
 `
 const ProgressBanner = styled.div`
-  width: 90vw;
+  width: 100vw;
 
   display: flex;
   justify-content: center;
+  align-items: center;
   flex-direction: column;
   gap: 2vh;
+
+  background: #f7f7f7;
+  padding-top: 2vh;
+  padding-bottom: 4vh;
+`
+
+const ProgressBannerCard = styled.div`
+  width: 90vw;
+  padding: 5vw;
+  border: 1px solid #F4F5F7;
+  border-radius: 15px;
+  box-shadow: 0 2px 12px rgba(67,137,162,0.08);
+  background: #fff;
 `
 
 const ProgressBannerTitle = styled.div`
   text-align: center;
   font-weight: bold;
-  font-size: 2rem;
+  font-size: 1.5rem;
 `
 
 const ProgressBannerBoxContainer = styled.div`
-  width: 90vw;
-
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 5vw;
 
   color: white;
-
   // Children Styles
   & > :nth-child(1) {
-    background: linear-gradient(160deg, #FFA07A 0%, #C8A2C8 35%, #9BB7D4 55%, #40E0D0 100%);
+    background: #333333;
+    color: white;
   }
 
   & > :nth-child(2) {
-    background: #9BB7D4;
-    background: linear-gradient(100deg, #007BFF 0%, #9BB7D4 50%);
+    background: #333333;
+    color: white;
   }
 
   & > :nth-child(3) {
@@ -153,8 +191,8 @@ const ProgressBannerBoxContainer = styled.div`
   }
 
   & > :nth-child(4){
-    background: #FFA07A;
-    background: linear-gradient(100deg, tomato 0%, #FFA07A 50%);
+    background: #333333;
+    color: white;
   }
 
 `
@@ -169,9 +207,12 @@ const ProgressBannerBox = styled.div`
   align-items: center;
 
   height: 10vh;
+
+  font-size: 1.2rem;
 `
 
 const ProgressTitle = styled.div`
+  font-weight: bold;
 `
 
 // About Us Styles
@@ -179,8 +220,6 @@ const ProgressTitle = styled.div`
 const AboutUsBanner = styled.div`
   
   width: 90vw;
-
-
   color: white;
 `
 
@@ -200,6 +239,7 @@ const AboutUsDescription = styled.div`
   background: linear-gradient(160deg, black 0%, #333333 70%);
   padding: 5vw;
   border-radius: 15px;
+  font-size: 1.1rem;
 `
 
 const AboutUsSlogan = styled.div`
@@ -292,22 +332,33 @@ function App() {
           <AboutUsDescription>
             We stand out. We understand everyone has the same hours in a day, but those hours will be spent differently.
 
-            With us, you will find a workout that fits your goals and your schedule. No such thing as perfect for you.
+            With us, you will find a workout that fits your goals and your schedule.
           </AboutUsDescription>
 
           <AboutUsSlogan>
-            Avoid the Noise. Find your Flock
+            FIND YOUR OWN
           </AboutUsSlogan>
 
         </AboutUsBanner>
 
-        {/* <ProgressBanner>
+        <div>
+          <WorkoutContainerTitle>THE "FAVOURITES"</WorkoutContainerTitle>
+          <WorkoutContainer>
+            
+            <Workout>FULL BODY</Workout>
+            <Workout>PPL</Workout>
+            <Workout>C25K</Workout>
+            <Workout>UPPER LOWER</Workout>
+          </WorkoutContainer>
+        </div>
+
+        <ProgressBanner>
           <ProgressBannerTitle>
-            Track your progress!
+            TRACK&nbsp;<span style={{textDecoration: "underline"}}>YOUR</span>&nbsp;PROGRESS
           </ProgressBannerTitle>
 
-          <div>
-            <ProgressTitle>Achievements</ProgressTitle>
+          <ProgressBannerCard>
+            <ProgressTitle></ProgressTitle>
             <ProgressBannerBoxContainer>
               <ProgressBannerBox>
                 8-WEEK C25K
@@ -316,36 +367,25 @@ function App() {
                 4-WEEK FULL BODY
               </ProgressBannerBox>
               <ProgressBannerBox>
-                12-WEEK FULL BODY
+                12-WEEK UPPER LOWER
               </ProgressBannerBox>
               <ProgressBannerBox>
                 6-WEEK PPL 
               </ProgressBannerBox>
             </ProgressBannerBoxContainer>
-          </div>
+          </ProgressBannerCard>
+        </ProgressBanner>
 
-        </ProgressBanner> */}
+        <div>
+          <WorkoutContainerTitle>THE HYBRID</WorkoutContainerTitle>
+          <WorkoutContainer>
+            <Workout hybrid='hybrid'>80RUN</Workout>
+            <Workout hybrid='hybrid'>80LIFT</Workout>
+            <Workout hybrid='hybrid'>FIFTY</Workout>
+            <Workout hybrid='hybrid'>JUMP</Workout>
+          </WorkoutContainer>
+        </div>
 
-        {/* <WorkoutContainer>
-        {
-          workouts.map((workout, idx: number )=>{
-            return (
-              <>
-                <Workout>
-                  {workout.workout_name}
-                </Workout>
-                <Workout>
-                  {workout.workout_name}
-                </Workout>
-                <Workout>
-                  {workout.workout_name}
-                </Workout>
-              </>
-            )
-          })
-        }
-
-        </WorkoutContainer> */}
       </Wrapper>
     </>
   )
