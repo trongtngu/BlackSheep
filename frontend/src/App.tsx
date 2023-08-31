@@ -119,27 +119,76 @@ const ProgressBanner = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
+  gap: 2vh;
 `
 
 const ProgressBannerTitle = styled.div`
-  
+  text-align: center;
+  font-weight: bold;
+  font-size: 2rem;
 `
 
 const ProgressBannerBoxContainer = styled.div`
   width: 90vw;
 
   display: flex;
+  flex-direction: column;
   gap: 5vw;
+
+  color: white;
+
+  // Children Styles
+  & > :nth-child(1) {
+    background: linear-gradient(160deg, #FFA07A 0%, #C8A2C8 35%, #9BB7D4 55%, #40E0D0 100%);
+  }
+
+  & > :nth-child(2) {
+    background: #9BB7D4;
+    background: linear-gradient(100deg, #007BFF 0%, #9BB7D4 50%);
+  }
+
+  & > :nth-child(3) {
+    background: #333333;
+    color: white;
+  }
+
+  & > :nth-child(4){
+    background: #FFA07A;
+    background: linear-gradient(100deg, tomato 0%, #FFA07A 50%);
+  }
+
 `
 
 const ProgressBannerBox = styled.div`
-  border: 1px solid black;
   border-radius: 10px;
 
-  flex: 1 1 0;
-
   font-weight: bold;
-  text-align: center;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 10vh;
+`
+
+const ProgressTitle = styled.div`
+`
+
+// About Us Styles
+
+const AboutUsBanner = styled.div`
+  
+`
+
+const AboutUsTitle = styled.div`
+  
+`
+
+const AboutUsDescription = styled.div`
+`
+
+const AboutUsSlogan = styled.div`
+  
 `
 
 function App() {
@@ -213,29 +262,34 @@ function App() {
 
         </LandingBanner>
 
-        <ProgressBanner>
+
+
+        {/* <ProgressBanner>
           <ProgressBannerTitle>
-            Share your progress!
+            Track your progress!
           </ProgressBannerTitle>
 
-          <ProgressBannerBoxContainer>
-            <ProgressBannerBox>
-              NIKE RUN APP
-            </ProgressBannerBox>
-            <ProgressBannerBox>
-              PROGRAM COMPLETED: FULL BODY
-            </ProgressBannerBox>
-            <ProgressBannerBox>
-              PROGRAM COMPLETED: PPL
-            </ProgressBannerBox>
-          </ProgressBannerBoxContainer>
-        </ProgressBanner>
+          <div>
+            <ProgressTitle>Achievements</ProgressTitle>
+            <ProgressBannerBoxContainer>
+              <ProgressBannerBox>
+                8-WEEK C25K
+              </ProgressBannerBox>
+              <ProgressBannerBox>
+                4-WEEK FULL BODY
+              </ProgressBannerBox>
+              <ProgressBannerBox>
+                12-WEEK FULL BODY
+              </ProgressBannerBox>
+              <ProgressBannerBox>
+                6-WEEK PPL 
+              </ProgressBannerBox>
+            </ProgressBannerBoxContainer>
+          </div>
 
+        </ProgressBanner> */}
 
-
-
-
-        <WorkoutContainer>
+        {/* <WorkoutContainer>
         {
           workouts.map((workout, idx: number )=>{
             return (
@@ -254,7 +308,7 @@ function App() {
           })
         }
 
-        </WorkoutContainer>
+        </WorkoutContainer> */}
       </Wrapper>
     </>
   )
