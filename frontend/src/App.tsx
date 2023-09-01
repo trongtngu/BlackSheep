@@ -62,7 +62,7 @@ const WorkoutContainerTitle = styled.div`
 const Workout = styled.div<StyledProps>`
   flex: 1 1 1;
   
-  border: 1px solid lightgrey;
+  border: 1px solid #F4F5F7;
   width: 60vw;
   height: 10vh;
 
@@ -72,9 +72,8 @@ const Workout = styled.div<StyledProps>`
 
   border-radius: 10px;
 
-  background: #FFA07A;
-  background: ${props => props.hybrid === 'hybrid' ? '#40E0D0' : "#FFA07A"};
 
+  background: ${props => props.hybrid === 'hybrid' ? 'linear-gradient(160deg, #20B2AA 0%, #40E0D0 75%);' : "linear-gradient(160deg, tomato 0%, #FFA07A 75%)"};
   font-family: 'Inter', sans-serif;
   font-weight: 700;
   font-size: 2rem;
@@ -150,6 +149,7 @@ const ProgressBanner = styled.div`
   background: #f7f7f7;
   padding-top: 2vh;
   padding-bottom: 4vh;
+  
 `
 
 const ProgressBannerCard = styled.div`
@@ -176,23 +176,23 @@ const ProgressBannerBoxContainer = styled.div`
   color: white;
   // Children Styles
   & > :nth-child(1) {
-    background: #333333;
     color: white;
+    background: linear-gradient(160deg, black 0%, #333333 70%);
   }
 
   & > :nth-child(2) {
-    background: #333333;
     color: white;
+    background: linear-gradient(160deg, black 0%, #333333 70%);
   }
 
   & > :nth-child(3) {
-    background: #333333;
     color: white;
+    background: linear-gradient(160deg, black 0%, #333333 70%);
   }
 
   & > :nth-child(4){
-    background: #333333;
     color: white;
+    background: linear-gradient(160deg, black 0%, #333333 70%);
   }
 
 `
