@@ -348,10 +348,6 @@ const FeedBoxBody = styled.div`
   color: #FFEF80;
 `
 
-
-
-
-
 function Landing() {
 
   const [workoutData, setWorkoutData] = React.useState<WorkoutDataSingle[]>([])
