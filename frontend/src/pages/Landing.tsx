@@ -5,6 +5,7 @@ import Navbar from '.././components/Navbar'
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
 import StarRateIcon from '@mui/icons-material/StarRate';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 // Styled Prop Types:
 
 type StyledProps = {
@@ -177,22 +178,7 @@ const ProgressBannerBoxContainer = styled.div`
 
   color: white;
   // Children Styles
-  & > :nth-child(1) {
-    color: white;
-    background: linear-gradient(160deg, black 0%, #333333 70%);
-  }
-
-  & > :nth-child(2) {
-    color: white;
-    background: linear-gradient(160deg, black 0%, #333333 70%);
-  }
-
-  & > :nth-child(3) {
-    color: white;
-    background: linear-gradient(160deg, black 0%, #333333 70%);
-  }
-
-  & > :nth-child(4){
+  & > div {
     color: white;
     background: linear-gradient(160deg, black 0%, #333333 70%);
   }
@@ -283,7 +269,6 @@ const CommunityTitle = styled.div`
 const CommunityBox = styled.div`
 `
 
-
 const CommunityCard = styled.div`
   border: 1px solid #F4F5F7;
   border-radius: 15px;
@@ -321,6 +306,51 @@ const CommunityRating = styled.div`
   padding-top:6vw;
   color: #FFA07A;
 `
+
+const FeedBoxContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5vw;
+
+  color: white;
+  // Children Styles
+  & > div {
+    color: white;
+    background: linear-gradient(160deg, black 0%, #333333 70%);
+  }
+`
+
+const FeedBox = styled.div`
+  border-radius: 10px;
+
+  font-weight: bold;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10vh;
+
+  font-size: 1.2rem;
+  padding-left: 1vw;
+  padding-right: 1vw;
+`
+
+const FeedBoxTitle = styled.div`
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`
+
+const FeedBoxBody = styled.div`
+  width: 60vw;
+  
+  color: #FFEF80;
+`
+
+
+
+
 
 function Landing() {
 
@@ -436,7 +466,7 @@ function Landing() {
           </ProgressBannerTitle>
 
           <ProgressBannerCard>
-            <ProgressTitle></ProgressTitle>
+            <ProgressTitle>Achievements</ProgressTitle>
             <ProgressBannerBoxContainer>
               <ProgressBannerBox>
                 8-WEEK C25K
@@ -448,17 +478,54 @@ function Landing() {
                 12-WEEK UPPER LOWER
               </ProgressBannerBox>
               <ProgressBannerBox>
-                6-WEEK PPL 
+                6-WEEK PPL
               </ProgressBannerBox>
             </ProgressBannerBoxContainer>
           </ProgressBannerCard>
+
+          <ProgressBannerTitle>
+            (AND SHOW IT OFF)
+          </ProgressBannerTitle>
+
+          <ProgressBannerCard>
+            <ProgressTitle>Feed</ProgressTitle>
+            <FeedBoxContainer>
+              <FeedBox >
+                <div>
+                  <FeedBoxTitle>Mango <span style={{fontWeight:'normal'}} >hit a milestone</span></FeedBoxTitle>
+                  <FeedBoxBody>8-WEEK C25K</FeedBoxBody>
+                </div>
+                <FavoriteBorderIcon /> 
+              </FeedBox>
+              <FeedBox >
+                <div>
+                  <FeedBoxTitle>Papaya <span style={{fontWeight:'normal'}} >hit a milestone</span></FeedBoxTitle>
+                  <FeedBoxBody>4-WEEK FULL BODY</FeedBoxBody>
+                </div>
+                <FavoriteBorderIcon /> 
+              </FeedBox>
+              <FeedBox >
+                <div>
+                  <FeedBoxTitle>Kiwi <span style={{fontWeight:'normal'}} >hit a milestone</span></FeedBoxTitle>
+                  <FeedBoxBody>12-WEEK 80RUN</FeedBoxBody>
+                </div>
+                  <FavoriteBorderIcon /> 
+              </FeedBox>
+              <FeedBox>
+                <div>
+                  <FeedBoxTitle>Jocelyn <span style={{fontWeight:'normal'}} >hit a milestone</span></FeedBoxTitle>
+                  <FeedBoxBody>6-WEEK PPL</FeedBoxBody>
+                </div>
+                  <FavoriteBorderIcon /> 
+              </FeedBox>
+            </FeedBoxContainer>
+          </ProgressBannerCard>
+
         </ProgressBanner>
-
-
 
         <CommunityBanner>
           <CommunityTitle>
-            Find your Community
+            FIND&nbsp;<span style={{textDecoration: "underline"}}>YOUR</span>&nbsp;COMMUNITY
           </CommunityTitle>
 
           <CommunityBox>
@@ -472,7 +539,7 @@ function Landing() {
           <CommunityCard>
             <div>
               <CommunityCardTitle>
-                Adding more Legs?
+                Add more legs!
               </CommunityCardTitle>
               
               <CommunityCardBody>
@@ -487,7 +554,7 @@ function Landing() {
           <CommunityCard>
             <div>
               <CommunityCardTitle>
-                Elbow pain from Tricep
+                Reducing Volume?
               </CommunityCardTitle>
               
               <CommunityCardBody>
@@ -502,7 +569,7 @@ function Landing() {
           <CommunityCard>
             <div>
               <CommunityCardTitle>
-                Reducing Volume?
+                Back pain from Barbell Rows?
               </CommunityCardTitle>
               
               <CommunityCardBody>
@@ -529,9 +596,9 @@ function Landing() {
               <div>211</div>
             </CommunityRating>
           </CommunityCard>
-            
-
         </CommunityBanner>
+
+        {/* TODO: Workout Tracking workouts */}
 
       </Wrapper>
     </>
