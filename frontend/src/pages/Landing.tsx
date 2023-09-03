@@ -6,6 +6,8 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
 import StarRateIcon from '@mui/icons-material/StarRate';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+
+import TrackerInfoBody from '../components/TrackerInfoBody';
 // Styled Prop Types:
 
 type StyledProps = {
@@ -348,6 +350,71 @@ const FeedBoxBody = styled.div`
   color: #FFEF80;
 `
 
+const TrackerBanner = styled.div`
+  width: 90vw;
+  text-align: center;
+`
+
+const TrackerTitle = styled.div`
+  color: #4A4A4A;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-weight: bold;
+
+  font-size: 1.5rem;
+`
+
+const TrackerBody = styled.div`
+  
+`
+
+const TrackerSheetCard = styled.div`
+  border: 1px solid #F4F5F7;
+  border-radius: 15px;
+  box-shadow: 0 2px 12px rgba(67,137,162,0.08);
+  background: #fff;
+
+  color: #4A4A4A;
+
+  padding: 5vw;
+`
+
+const TrackerSheetTitle = styled.div`
+  text-align: start;
+  font-weight: bold;
+  font-size: 1.2rem;
+`
+
+const TrackerSheetContainer = styled.div`
+  height: 60vh;
+
+  overflow: auto;
+  display: flex;
+`
+
+const TrackerSheetColumn = styled.div`
+  align-self: flex-start;
+`;
+
+
+const TrackerInfoTitle = styled.div`
+  width: 40vw;
+  height: 8vh;
+
+  border: 1px solid #F4F5F7;
+  border-radius: 15px;
+  box-shadow: 0 2px 12px rgba(67,137,162,0.08);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-weight: bold;
+`
+
 function Landing() {
 
   const [workoutData, setWorkoutData] = React.useState<WorkoutDataSingle[]>([])
@@ -594,8 +661,136 @@ function Landing() {
           </CommunityCard>
         </CommunityBanner>
 
-        {/* TODO: Workout Tracking workouts */}
+        <TrackerBanner>
+          <TrackerTitle>
+            TRACK WORKOUTS
+          </TrackerTitle>
+          <TrackerBody>
+            We wanted to take away some of the ceebs of tracking your workouts.
 
+            Track sets and reps, perceived effort and how you're generally feeling during that workout
+            without manual entry.
+
+            Fear not, theres a fully customisable version too.
+          </TrackerBody>
+
+          <div>Try it out</div>
+
+          <TrackerSheetCard>
+            <TrackerSheetTitle>
+              <div>PPL - 03/09/2023</div>
+              <div>PULL</div>
+            </TrackerSheetTitle>
+            <TrackerSheetContainer>
+
+
+              <TrackerSheetColumn>
+                <TrackerInfoTitle>
+                  Barbell Rows
+                </TrackerInfoTitle>
+                <TrackerInfoBody>
+                  <div>10 reps</div>
+                  <div>20kg</div>
+                </TrackerInfoBody>
+                <TrackerInfoBody>
+                  <div>10 reps</div>
+                  <div>20kg</div>
+                </TrackerInfoBody>
+                <TrackerInfoBody>
+                  <div>10 reps</div>
+                  <div>20kg</div>
+                </TrackerInfoBody>
+              </TrackerSheetColumn>
+
+              <TrackerSheetColumn>
+                <TrackerInfoTitle>
+                  Lat Pulldowns
+                </TrackerInfoTitle>
+                <TrackerInfoBody>
+                  <div>12 reps</div>
+                  <div>20kg</div>
+                </TrackerInfoBody>
+                <TrackerInfoBody>
+                  <div>12 reps</div>
+                  <div>20kg</div>
+                </TrackerInfoBody>
+                <TrackerInfoBody>
+                  <div>12 reps</div>
+                  <div>20kg</div>
+                </TrackerInfoBody>
+              </TrackerSheetColumn>
+
+              <TrackerSheetColumn>
+                <TrackerInfoTitle>
+                  Chest Supported Rows
+                </TrackerInfoTitle>
+                <TrackerInfoBody>
+                  <div>10 reps</div>
+                  <div>20kg</div>
+                </TrackerInfoBody>
+                <TrackerInfoBody>
+                  <div>10 reps</div>
+                  <div>20kg</div>
+                </TrackerInfoBody>
+                <TrackerInfoBody>
+                  <div>10 reps</div>
+                  <div>20kg</div>
+                </TrackerInfoBody>
+                <TrackerInfoBody>
+                  <div>10 reps</div>
+                  <div>20kg</div>
+                </TrackerInfoBody>
+              </TrackerSheetColumn>
+
+              <TrackerSheetColumn>
+              <TrackerInfoTitle>
+                Face Pulls
+              </TrackerInfoTitle>
+              <TrackerInfoBody>
+                <div>15 reps</div>
+                <div>20kg</div>
+              </TrackerInfoBody>
+              <TrackerInfoBody>
+                <div>15 reps</div>
+                <div>20kg</div>
+              </TrackerInfoBody>
+              <TrackerInfoBody>
+                <div>15 reps</div>
+                <div>20kg</div>
+              </TrackerInfoBody>
+            </TrackerSheetColumn>
+
+            <TrackerSheetColumn>
+              <TrackerInfoTitle>
+                Dumbbell Curls
+              </TrackerInfoTitle>
+              <TrackerInfoBody>
+                <div>12 reps</div>
+                <div>20kg</div>
+              </TrackerInfoBody>
+              <TrackerInfoBody>
+                <div>12 reps</div>
+                <div>20kg</div>
+              </TrackerInfoBody>
+              <TrackerInfoBody>
+                <div>12 reps</div>
+                <div>20kg</div>
+              </TrackerInfoBody>
+              <TrackerInfoBody>
+                <div>12 reps</div>
+                <div>20kg</div>
+              </TrackerInfoBody>
+              <TrackerInfoBody>
+                <div>12 reps</div>
+                <div>20kg</div>
+              </TrackerInfoBody>
+            </TrackerSheetColumn>
+            </TrackerSheetContainer>
+
+
+          </TrackerSheetCard>
+
+        </TrackerBanner>
       </Wrapper>
     </>
   )
