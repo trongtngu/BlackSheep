@@ -415,6 +415,20 @@ const TrackerInfoTitle = styled.div`
   font-weight: bold;
 `
 
+const TrackerSlogan = styled.div`
+  color: #4A4A4A;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-weight: bold;
+
+  font-size: 1rem;
+
+  margin-bottom: 1vh;
+`
+
 function Landing() {
 
   const [workoutData, setWorkoutData] = React.useState<WorkoutDataSingle[]>([])
@@ -674,7 +688,9 @@ function Landing() {
             Fear not, theres a fully customisable version too.
           </TrackerBody>
 
-          <div>Try it out</div>
+          <TrackerSlogan>
+            Try it out!
+          </TrackerSlogan>
 
           <TrackerSheetCard>
             <TrackerSheetTitle>

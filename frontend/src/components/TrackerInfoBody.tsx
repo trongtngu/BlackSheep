@@ -17,6 +17,7 @@ const InfoBody = styled.div`
     background-color: #FFA07A ;
 
     color: white;
+    font-weight: bold;
   }
 `
 
