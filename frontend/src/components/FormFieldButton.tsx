@@ -18,7 +18,6 @@ const MyButton = styled.div`
 
   &.clicked {
     background-color: #FFA07A;
-
     color: white;
     font-weight: bold;
   }
@@ -27,16 +26,22 @@ const MyButton = styled.div`
 interface FormFieldProps {
   children: ReactNode;
   value: string;
+  callback: (value: string) => void // Function that returns nothing 
 }
 
-const FormFieldButton: React.FC<FormFieldProps> = ( {children, value} ) => {
+const FormFieldButton: React.FC<FormFieldProps> = ( {children, value, callback} ) => {
+  const [clicked, setClicked] = React.useState(false);
 
-  const [clicked, setClicked] = React.useState(false)
+  const handleButtonClick = () => {
+    setClicked(!clicked);
+    callback(value);
+  }
+  
   return (
     <>
     <MyButton
       className={clicked ? 'clicked' : ''}
-      onClick={()=> setClicked(!clicked)}
+      onClick={()=> {handleButtonClick()}}
       >
       {children}
     </MyButton>

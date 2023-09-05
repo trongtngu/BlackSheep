@@ -178,14 +178,35 @@ export default function UserDiscovery() {
   }
 
   const [preferences, setPreferences] = React.useState<Array<string>>([])
+  const handlePrefClick = (pref: string) => {
+    setPreferences((prevPref) => {
+      if (prevPref.includes(pref)) {
+        return prevPref.filter(((removePref) => removePref !== pref))
+      } 
+      
+      else {
+        return [...prevPref, pref]
+      }
+    })
+  }
 
-  const [numDays, setNumDays] = React.useState<Array<number>>([])
+  const [numDays, setNumDays] = React.useState<Array<string>>([])
+  const handleDaysClick = (day: string) => {
+    setNumDays((prevDay) => {
+      if (prevDay.includes(day)) {
+        return prevDay.filter(((removeDay) => removeDay !== day))
+      } 
+      
+      else {
+        return [...prevDay, day]
+      }
+    })
+  }
 
   return (
     <>
       <Navbar />
       <Wrapper>
-      
         <Form>
           <FormTitle>
             About You
@@ -218,19 +239,19 @@ export default function UserDiscovery() {
           <FormSubtitle>
           </FormSubtitle>
           <FormBody>
-            <FormFieldButton value="Weight Loss">
+            <FormFieldButton value="Weight Loss" callback={handleGoalsClick}>
               Weight Loss
             </FormFieldButton>
-            <FormFieldButton>
+            <FormFieldButton value="Weight Maintenance" callback={handleGoalsClick}>
               Weight Maintenance
             </FormFieldButton>
-            <FormFieldButton>
+            <FormFieldButton value="Weight Gain" callback={handleGoalsClick}>
               Weight Gain
             </FormFieldButton>
-            <FormFieldButton>
+            <FormFieldButton value="Build Muscle" callback={handleGoalsClick}>
               Build Muscle
             </FormFieldButton>
-            <FormFieldButton>
+            <FormFieldButton value="Stress Relief" callback={handleGoalsClick}>
               Stress Relief
             </FormFieldButton>
             <FormButtonContainer>
@@ -254,16 +275,16 @@ export default function UserDiscovery() {
           <FormSubtitle>
           </FormSubtitle>
           <FormBody>
-            <FormFieldButton>
+            <FormFieldButton value="Lifting Weights" callback={handlePrefClick}>
               Lifting Weights
             </FormFieldButton>
-            <FormFieldButton>
+            <FormFieldButton value="Running" callback={handlePrefClick}>
               Running
             </FormFieldButton>
-            <FormFieldButton>
+            <FormFieldButton value="Walking" callback={handlePrefClick}>
               Walking
             </FormFieldButton>
-            <FormFieldButton>
+            <FormFieldButton value="Not sure" callback={handlePrefClick}>
               Not sure 
             </FormFieldButton>
             <FormButtonContainer>
@@ -291,25 +312,25 @@ export default function UserDiscovery() {
             be ambitious but realistic.
           </FormSubtitle>
           <FormBody>
-            <FormFieldButton>
+            <FormFieldButton value="1" callback={handleDaysClick}>
               1
             </FormFieldButton>
-            <FormFieldButton>
+            <FormFieldButton value="2" callback={handleDaysClick}>
               2
             </FormFieldButton>
-            <FormFieldButton>
+            <FormFieldButton value="3" callback={handleDaysClick}>
               3
             </FormFieldButton>
-            <FormFieldButton>
+            <FormFieldButton value="4" callback={handleDaysClick}>
               4
             </FormFieldButton>
-            <FormFieldButton>
+            <FormFieldButton value="5" callback={handleDaysClick}>
               5
             </FormFieldButton>
-            <FormFieldButton>
+            <FormFieldButton value="6" callback={handleDaysClick}>
               6
             </FormFieldButton>
-            <FormFieldButton>
+            <FormFieldButton value="7" callback={handleDaysClick}>
               7
             </FormFieldButton>
             <FormButtonContainer>
