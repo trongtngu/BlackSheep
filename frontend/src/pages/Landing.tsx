@@ -4,12 +4,15 @@ import styled from 'styled-components'
 import Navbar from '.././components/Navbar'
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
-import StarRateIcon from '@mui/icons-material/StarRate';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 import TrackerInfoBody from '../components/TrackerInfoBody';
-// Styled Prop Types:
 
+import {
+  useNavigate
+} from 'react-router-dom'
+
+// Styled Prop Types:
 type StyledProps = {
   hybrid?: string;
 }
@@ -429,10 +432,24 @@ const TrackerSlogan = styled.div`
   margin-bottom: 1vh;
 `
 
+const RedirectButtonBanner = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5vw;
+`
+const RedirectButton = styled.div`
+  background: linear-gradient(160deg, #20B2AA 0%, #40E0D0 100%);
+  padding: 5px 40px 5px 40px;
+  border-radius: 10px;
+  color: white;
+`
+
 function Landing() {
 
-  const [workoutData, setWorkoutData] = React.useState<WorkoutDataSingle[]>([])
+  let navigate = useNavigate()
 
+  const [workoutData, setWorkoutData] = React.useState<WorkoutDataSingle[]>([])
   const getWorkoutDataById = async (id: number) => {
     try {
       const response: Response = await fetch(`/api/workout/${id}`);
@@ -469,9 +486,9 @@ function Landing() {
     }
   }
 
-  React.useEffect(()=>{
-    getWorkouts()
-  },[])
+  // React.useEffect(()=>{
+  //   getWorkouts()
+  // },[])
 
 
   return (
@@ -492,7 +509,7 @@ function Landing() {
           <LandingBannerDescription>
             <div>Lost in the gym or super busy?</div>
             <div>Find a workout that fits you.</div>
-            <GetStartedButton>
+            <GetStartedButton onClick={()=>navigate('/userDiscovery')}>
               Get Started ➜
             </GetStartedButton>
           </LandingBannerDescription>
@@ -677,7 +694,7 @@ function Landing() {
 
         <TrackerBanner>
           <TrackerTitle>
-            TRACK WORKOUTS
+            TRACK SESSIONS
           </TrackerTitle>
           <TrackerBody>
             We wanted to take away some of the ceebs of tracking your workouts.
@@ -698,8 +715,6 @@ function Landing() {
               <div>PULL</div>
             </TrackerSheetTitle>
             <TrackerSheetContainer>
-
-
               <TrackerSheetColumn>
                 <TrackerInfoTitle>
                   Barbell Rows
@@ -805,8 +820,18 @@ function Landing() {
 
 
           </TrackerSheetCard>
+          <TrackerSlogan>
+            ... or customise your own!
+          </TrackerSlogan>
+
+          <RedirectButtonBanner>
+            <RedirectButton>
+              Start customising ➜
+            </RedirectButton>
+          </RedirectButtonBanner>
 
         </TrackerBanner>
+
       </Wrapper>
     </>
   )
