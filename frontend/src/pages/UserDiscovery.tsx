@@ -10,8 +10,11 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+
   width: 100vw;
+  height: 70vh;
 `
+
 const Form = styled.div`
   width: 90vw;
   padding: 5vw;
@@ -52,7 +55,7 @@ const FormBody = styled.div`
   gap: 1vh;
 `
 
-const FormField = styled.div`
+const FormField = styled.input`
   border: 1px solid grey;
   border-radius: 5px;
 
@@ -60,6 +63,14 @@ const FormField = styled.div`
 
   padding-left: 20px;
   padding-right: 20px;
+  
+  &:focus {
+    outline: 2px solid #20B2AA;
+  }
+
+  ::placeholder {
+    color: #888;
+  }
 
   width: 80vw;
 `
@@ -203,172 +214,220 @@ export default function UserDiscovery() {
     })
   }
 
+  const [form, setForm] = React.useState("About You");
+  const [error, setError] = React.useState("")
+  const handleNextClick = (curr: string, dest: string) => {
+
+    let myError = ""
+
+    if (curr === "About You" && name === "") {
+      myError = "Please enter your name"
+    }
+
+    if (curr === "Your Goal" && goals.length === 0){
+      myError = "Please choose at least ONE goal"
+    }
+
+    if (curr === "Workout Preferences" && preferences.length === 0) {
+      myError = "Please choose at least ONE preference"
+    }
+
+    if (curr === "Lifestyle" && numDays.length === 0) {
+      myError = "Please choose at least 1 day"
+    }
+
+    if (myError === "") {
+      setForm(dest)
+      setError("")
+    } else {
+      setError(myError)
+    }
+  }
+
   return (
     <>
       <Navbar />
       <Wrapper>
-        <Form>
-          <FormTitle>
-            About You
-          </FormTitle>
-          <FormSubtitle>
-            Let us know a bit about you
-          </FormSubtitle>
-          <FormBody>
-            <FormField>
-              Name
-            </FormField>
-            <FormButtonContainer>
-              <FormBackButton>
-                Back
-              </FormBackButton>
-              <FormNextButton>
-                Next ➜
-              </FormNextButton>
-            </FormButtonContainer>
-          </FormBody>
-        </Form>
+        {
+          form === "About You" &&
+          <Form>
+            <FormTitle>
+              About You
+            </FormTitle>
+            <FormSubtitle>
+              Let us know a bit about you
+            </FormSubtitle>
+            {name}
+            <FormBody>
+              <FormField placeholder='First Name' onChange={(e)=>setName(e.target.value)}>
+              </FormField>
+              {error}
+              <FormButtonContainer>
+                <FormBackButton>
+                  Back
+                </FormBackButton>
+                <FormNextButton onClick={()=>{handleNextClick("About You", "Your Goal")}}>
+                  Next ➜
+                </FormNextButton>
+              </FormButtonContainer>
+            </FormBody>
+          </Form>
+        }
 
-        <Form>
-          <FormTitle>
-            Your Goal
-          </FormTitle>
-          <FormSubtitle>
-            Your reason for wanting to do fitness
-          </FormSubtitle>
-          <FormSubtitle>
-          </FormSubtitle>
-          <FormBody>
-            <FormFieldButton value="Weight Loss" callback={handleGoalsClick}>
-              Weight Loss
-            </FormFieldButton>
-            <FormFieldButton value="Weight Maintenance" callback={handleGoalsClick}>
-              Weight Maintenance
-            </FormFieldButton>
-            <FormFieldButton value="Weight Gain" callback={handleGoalsClick}>
-              Weight Gain
-            </FormFieldButton>
-            <FormFieldButton value="Build Muscle" callback={handleGoalsClick}>
-              Build Muscle
-            </FormFieldButton>
-            <FormFieldButton value="Stress Relief" callback={handleGoalsClick}>
-              Stress Relief
-            </FormFieldButton>
-            <FormButtonContainer>
-              <FormBackButton>
-                Back
-              </FormBackButton>
-              <FormNextButton>
-                Next ➜
-              </FormNextButton>
-            </FormButtonContainer>
-          </FormBody>
-        </Form>
+        {
+          form === "Your Goal" &&
+          <Form>
+            <FormTitle>
+              Your Goal
+            </FormTitle>
+            <FormSubtitle>
+              Your reason for wanting to do fitness
+            </FormSubtitle>
+            <FormSubtitle>
+            </FormSubtitle>
+            <FormBody>
+              <FormFieldButton value="Weight Loss" callback={handleGoalsClick}>
+                Weight Loss
+              </FormFieldButton>
+              <FormFieldButton value="Weight Maintenance" callback={handleGoalsClick}>
+                Weight Maintenance
+              </FormFieldButton>
+              <FormFieldButton value="Weight Gain" callback={handleGoalsClick}>
+                Weight Gain
+              </FormFieldButton>
+              <FormFieldButton value="Build Muscle" callback={handleGoalsClick}>
+                Build Muscle
+              </FormFieldButton>
+              <FormFieldButton value="Stress Relief" callback={handleGoalsClick}>
+                Stress Relief
+              </FormFieldButton>
+              {error}
+              <FormButtonContainer>
+                <FormBackButton>
+                  Back
+                </FormBackButton>
+                <FormNextButton onClick={()=>{handleNextClick("Your Goal", "Workout Preferences")}}>
+                  Next ➜
+                </FormNextButton>
+              </FormButtonContainer>
+            </FormBody>
+          </Form>
+        }
 
-        <Form>
-          <FormTitle>
-            Workout Preferences
-          </FormTitle>
-          <FormSubtitle>
-            What do you enjoy the most
-          </FormSubtitle>
-          <FormSubtitle>
-          </FormSubtitle>
-          <FormBody>
-            <FormFieldButton value="Lifting Weights" callback={handlePrefClick}>
-              Lifting Weights
-            </FormFieldButton>
-            <FormFieldButton value="Running" callback={handlePrefClick}>
-              Running
-            </FormFieldButton>
-            <FormFieldButton value="Walking" callback={handlePrefClick}>
-              Walking
-            </FormFieldButton>
-            <FormFieldButton value="Not sure" callback={handlePrefClick}>
-              Not sure 
-            </FormFieldButton>
-            <FormButtonContainer>
-              <FormBackButton>
-                Back
-              </FormBackButton>
-              <FormNextButton>
-                Next ➜
-              </FormNextButton>
-            </FormButtonContainer>
-          </FormBody>
-        </Form>
+        {
+          form === "Workout Preferences" &&
+          <Form>
+            <FormTitle>
+              Workout Preferences
+            </FormTitle>
+            <FormSubtitle>
+              What do you enjoy the most
+            </FormSubtitle>
+            <FormSubtitle>
+            </FormSubtitle>
+            <FormBody>
+              <FormFieldButton value="Lifting Weights" callback={handlePrefClick}>
+                Lifting Weights
+              </FormFieldButton>
+              <FormFieldButton value="Running" callback={handlePrefClick}>
+                Running
+              </FormFieldButton>
+              <FormFieldButton value="Walking" callback={handlePrefClick}>
+                Walking
+              </FormFieldButton>
+              <FormFieldButton value="Not sure" callback={handlePrefClick}>
+                Not sure 
+              </FormFieldButton>
+              {error}
+              <FormButtonContainer>
+                <FormBackButton>
+                  Back
+                </FormBackButton>
+                <FormNextButton onClick={()=>{handleNextClick("Workout Preferences", "Lifestyle")}}>
+                  Next ➜
+                </FormNextButton>
+              </FormButtonContainer>
+            </FormBody>
+          </Form>
+        }
 
-        <Form>
-          <FormTitle>
-            Lifestyle
-          </FormTitle>
-          <FormSubtitle>
-            How many days can you work out
-          </FormSubtitle>
-          <FormSubtitle>
-            Rockets never launch at full speed,
-          </FormSubtitle>
-          <FormSubtitle>
-            be ambitious but realistic.
-          </FormSubtitle>
-          <FormBody>
-            <FormFieldButton value="1" callback={handleDaysClick}>
-              1
-            </FormFieldButton>
-            <FormFieldButton value="2" callback={handleDaysClick}>
-              2
-            </FormFieldButton>
-            <FormFieldButton value="3" callback={handleDaysClick}>
-              3
-            </FormFieldButton>
-            <FormFieldButton value="4" callback={handleDaysClick}>
-              4
-            </FormFieldButton>
-            <FormFieldButton value="5" callback={handleDaysClick}>
-              5
-            </FormFieldButton>
-            <FormFieldButton value="6" callback={handleDaysClick}>
-              6
-            </FormFieldButton>
-            <FormFieldButton value="7" callback={handleDaysClick}>
-              7
-            </FormFieldButton>
-            <FormButtonContainer>
-              <FormBackButton>
-                Back
-              </FormBackButton>
-              <FormNextButton>
-                Next ➜
-              </FormNextButton>
-            </FormButtonContainer>
-          </FormBody>
-        </Form>
+        {
+          form === "Lifestyle" &&
+          <Form>
+            <FormTitle>
+              Lifestyle
+            </FormTitle>
+            <FormSubtitle>
+              How many days can you work out
+            </FormSubtitle>
+            <FormSubtitle>
+              Rockets never launch at full speed,
+            </FormSubtitle>
+            <FormSubtitle>
+              be ambitious but realistic.
+            </FormSubtitle>
+            <FormBody>
+              <FormFieldButton value="1" callback={handleDaysClick}>
+                1
+              </FormFieldButton>
+              <FormFieldButton value="2" callback={handleDaysClick}>
+                2
+              </FormFieldButton>
+              <FormFieldButton value="3" callback={handleDaysClick}>
+                3
+              </FormFieldButton>
+              <FormFieldButton value="4" callback={handleDaysClick}>
+                4
+              </FormFieldButton>
+              <FormFieldButton value="5" callback={handleDaysClick}>
+                5
+              </FormFieldButton>
+              <FormFieldButton value="6" callback={handleDaysClick}>
+                6
+              </FormFieldButton>
+              <FormFieldButton value="7" callback={handleDaysClick}>
+                7
+              </FormFieldButton>
+              {error}
+              <FormButtonContainer>
+                <FormBackButton>
+                  Back
+                </FormBackButton>
+                <FormNextButton onClick={()=>{handleNextClick("Lifestyle", "Recommendations")}}>
+                  Next ➜
+                </FormNextButton>
+              </FormButtonContainer>
+            </FormBody>
+          </Form>
+        }
 
-        <Form>
-          <RecommendationTitle>
-            Recommendations
-          </RecommendationTitle>
-          <RecommendationWrapper>
-            <Recommendation>
-              <div>Push Pull Legs</div>
-              <div>3 days</div>
-            </Recommendation>
-            <Recommendation>
-              <div>C25k</div>
-              <div>3 days</div>
-            </Recommendation>
-            <Recommendation>
-              <div>Full Body</div>
-              <div>3 days</div>
-            </Recommendation>
+        {
+          form === "Recommendations" &&
+          <Form>
+            <RecommendationTitle>
+              Recommendations
+            </RecommendationTitle>
+            <RecommendationWrapper>
+              <Recommendation>
+                <div>Push Pull Legs</div>
+                <div>3 days</div>
+              </Recommendation>
+              <Recommendation>
+                <div>C25k</div>
+                <div>3 days</div>
+              </Recommendation>
+              <Recommendation>
+                <div>Full Body</div>
+                <div>3 days</div>
+              </Recommendation>
 
-            <OwnChoice>
-              <div>Find More</div>
-              <div>➜</div>
-            </OwnChoice>
-          </RecommendationWrapper>
-        </Form>
-
+              <OwnChoice>
+                <div>Find More</div>
+                <div>➜</div>
+              </OwnChoice>
+            </RecommendationWrapper>
+          </Form>
+        }
       </Wrapper>
     </>
   )
