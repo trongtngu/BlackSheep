@@ -1,8 +1,6 @@
-import React from 'react'
 import {
   Routes,
-  Route,
-  useNavigate
+  Route
 } from 'react-router-dom'
 
 import Landing from '../pages/Landing'

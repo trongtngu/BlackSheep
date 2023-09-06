@@ -1,4 +1,3 @@
-import React from 'react'
 import Site from './site/Site'
 import {
   BrowserRouter as Router

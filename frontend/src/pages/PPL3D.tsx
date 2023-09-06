@@ -1,4 +1,4 @@
-import React from 'react'
+// import React from 'react'
 import styled from 'styled-components'
 import Navbar from '../components/Navbar'
 
@@ -74,70 +74,61 @@ const SpreadsheetBanner = styled.div`
   
 `
 
-const SpreadsheetColumn = styled.div`
-  
-`
-
-const SpreadsheetBox = styled.div`
-  
-`
-
-
 // Declare the structure of WorkoutData
-type WorkoutDataSingle = {
-  workout_name: string;
-  exercise_name: string;
-  sets: number;
-  reps: number;
-}
+// type WorkoutDataSingle = {
+//   workout_name: string;
+//   exercise_name: string;
+//   sets: number;
+//   reps: number;
+// }
 
-type Workouts = {
-  workout_name: string;
-  workout_id: number;
-}
+// type Workouts = {
+//   workout_name: string;
+//   workout_id: number;
+// }
 
 export default function PPL3D() {
 
-  const [workoutData, setWorkoutData] = React.useState<WorkoutDataSingle[]>([])
-  const getWorkoutDataById = async (id: number) => {
-    try {
-      const response: Response = await fetch(`/api/workout/${id}`);
+  // const [workoutData, setWorkoutData] = React.useState<WorkoutDataSingle[]>([])
+  // const getWorkoutDataById = async (id: number) => {
+  //   try {
+  //     const response: Response = await fetch(`/api/workout/${id}`);
       
-      if(!response.ok) {
-        throw new Error("Fetch Error")
-      }
+  //     if(!response.ok) {
+  //       throw new Error("Fetch Error")
+  //     }
 
-      const data = await response.json();
-      console.log(data)
+  //     const data = await response.json();
+  //     console.log(data)
 
-      setWorkoutData(data)
+  //     setWorkoutData(data)
 
-    } catch (error) {
-      console.error(error)
-    }
-  }
+  //   } catch (error) {
+  //     console.error(error)
+  //   }
+  // }
 
-  const [workouts, setWorkouts] = React.useState<Workouts[]>([])
-  const getWorkouts = async () => {
-    try {
-      const response: Response = await fetch('/api/workout');
+  // const [workouts, setWorkouts] = React.useState<Workouts[]>([])
+  // const getWorkouts = async () => {
+  //   try {
+  //     const response: Response = await fetch('/api/workout');
 
-      if (!response.ok) {
-        throw new Error("Fetching All Workouts Error")
-      }
+  //     if (!response.ok) {
+  //       throw new Error("Fetching All Workouts Error")
+  //     }
 
-      const data = await response.json()
-      console.log(data)
+  //     const data = await response.json()
+  //     console.log(data)
 
-      setWorkouts(data)
-    } catch (error) {
-      console.error(error)
-    }
-  }
+  //     setWorkouts(data)
+  //   } catch (error) {
+  //     console.error(error)
+  //   }
+  // }
 
-  React.useEffect(()=>{
-    getWorkouts()
-  },[])
+  // React.useEffect(()=>{
+  //   getWorkouts()
+  // },[])
 
   return (
     <>
