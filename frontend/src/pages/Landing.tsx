@@ -17,19 +17,6 @@ type StyledProps = {
   hybrid?: string;
 }
 
-// Declare the structure of WorkoutData
-type WorkoutDataSingle = {
-  workout_name: string;
-  exercise_name: string;
-  sets: number;
-  reps: number;
-}
-
-type Workouts = {
-  workout_name: string;
-  workout_id: number;
-}
-
 // Styled Components
 const Wrapper = styled.div`
   display: flex;
@@ -448,48 +435,6 @@ const RedirectButton = styled.div`
 function Landing() {
 
   let navigate = useNavigate()
-
-  const [workoutData, setWorkoutData] = React.useState<WorkoutDataSingle[]>([])
-  const getWorkoutDataById = async (id: number) => {
-    try {
-      const response: Response = await fetch(`/api/workout/${id}`);
-      
-      if(!response.ok) {
-        throw new Error("Fetch Error")
-      }
-
-      const data = await response.json();
-      console.log(data)
-
-      setWorkoutData(data)
-
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-  const [workouts, setWorkouts] = React.useState<Workouts[]>([])
-  const getWorkouts = async () => {
-    try {
-      const response: Response = await fetch('/api/workout');
-
-      if (!response.ok) {
-        throw new Error("Fetching All Workouts Error")
-      }
-
-      const data = await response.json()
-      console.log(data)
-
-      setWorkouts(data)
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-  // React.useEffect(()=>{
-  //   getWorkouts()
-  // },[])
-
 
   return (
     <>

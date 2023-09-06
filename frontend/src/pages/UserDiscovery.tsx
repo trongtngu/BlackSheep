@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar'
 import styled from 'styled-components'
 
 import FormFieldButton from '../components/FormFieldButton'
+import { useNavigate } from 'react-router-dom'
 
 const Wrapper = styled.div`
   display: flex;
@@ -140,7 +141,7 @@ const RecommendationWrapper = styled.div`
   align-items: center;
 `
 
-const Recommendation = styled.div`
+const Recommendation = styled.button`
   border-radius: 5px;
 
   font-size: 1.4rem;
@@ -150,6 +151,8 @@ const Recommendation = styled.div`
   font-weight: bold;
 
   text-align: center;
+
+  border: 0;
 
   width: 50vw;
 `
@@ -172,6 +175,8 @@ const OwnChoice = styled.button`
 `
 
 export default function UserDiscovery() {
+
+  const navigate = useNavigate();
 
   const [name, setName] = React.useState<string>("")
 
@@ -257,7 +262,6 @@ export default function UserDiscovery() {
             <FormSubtitle>
               Let us know a bit about you
             </FormSubtitle>
-            {name}
             <FormBody>
               <FormField placeholder='First Name' onChange={(e)=>setName(e.target.value)}>
               </FormField>
@@ -408,7 +412,7 @@ export default function UserDiscovery() {
               Recommendations
             </RecommendationTitle>
             <RecommendationWrapper>
-              <Recommendation>
+              <Recommendation onClick={()=>{navigate("/template/PPL3D")}}>
                 <div>Push Pull Legs</div>
                 <div>3 days</div>
               </Recommendation>
