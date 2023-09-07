@@ -1,11 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import Navbar from '../components/Navbar'
-import HistoryIcon from '@mui/icons-material/History';
-import SettingsIcon from '@mui/icons-material/Settings';
-import HomeIcon from '@mui/icons-material/Home';
-
 import ExerciseColumn from '../components/ExerciseColumn';
+import Footer from '../components/MobileFooter';
 
 const Wrapper = styled.div`
   display: flex;
@@ -24,29 +21,14 @@ const TitleBanner = styled.div`
   padding: 0vw 5vw 0vw 5vw;
 
   align-items: center;
+
+  background: linear-gradient(160deg, #20B2AA 0%, #40E0D0 80%);
+  color: white;
 `
 
 const Title = styled.div`
   font-size: 1.2rem;
   font-weight: bold;
-`
-
-const InfoBar = styled.div`
-  background: linear-gradient(160deg, #20B2AA 0%, #40E0D0 120%);
-  width: 100vw;
-  height: 5vh;
-  display: flex;
-  justify-content: flex-end;
-`
-
-const InfoBarButton = styled.button`
-  background: none;
-  border: 0;
-  color: white;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `
 
 const SpreadsheetBanner = styled.div`
@@ -201,12 +183,6 @@ export default function PPL3D() {
         </Title>
       </TitleBanner>
 
-      <InfoBar>
-        <InfoBarButton><HomeIcon /></InfoBarButton>
-        <InfoBarButton><HistoryIcon /></InfoBarButton>
-        <InfoBarButton><SettingsIcon /></InfoBarButton>
-      </InfoBar>
-
       <SpreadsheetBanner>
         <SpreadsheetTitle>
           {today}
@@ -234,6 +210,7 @@ export default function PPL3D() {
         </CompleteButton>
       </CompleteBanner>
     </Wrapper>
+    <Footer />     
     </>
   )
 }
