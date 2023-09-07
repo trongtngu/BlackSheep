@@ -413,7 +413,7 @@ export default function UserDiscovery() {
             </RecommendationTitle>
             <RecommendationWrapper>
               <Recommendation onClick={()=>{navigate("/template/PPL3D")}}>
-                <div>Push Pull Legs</div>
+                <div>Full Body</div>
                 <div>3 days</div>
               </Recommendation>
               <Recommendation>
@@ -421,7 +421,7 @@ export default function UserDiscovery() {
                 <div>3 days</div>
               </Recommendation>
               <Recommendation>
-                <div>Full Body</div>
+                <div>Push Pull Legs</div>
                 <div>3 days</div>
               </Recommendation>
 

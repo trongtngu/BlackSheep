@@ -1,0 +1,56 @@
+[
+    {
+        "workout_name": "FULL BODY",
+        "exercise_name": "Barbell Bench Press",
+        "sets": 3,
+        "reps": 10
+    },
+    {
+        "workout_name": "FULL BODY",
+        "exercise_name": "Cable Chest Flies",
+        "sets": 3,
+        "reps": 10
+    },
+    {
+        "workout_name": "FULL BODY",
+        "exercise_name": "Dumbell Curls",
+        "sets": 3,
+        "reps": 10
+    },
+    {
+        "workout_name": "FULL BODY",
+        "exercise_name": "Lateral Raises",
+        "sets": 3,
+        "reps": 10
+    },
+    {
+        "workout_name": "FULL BODY",
+        "exercise_name": "Rope Pushdown",
+        "sets": 3,
+        "reps": 10
+    },
+    {
+        "workout_name": "FULL BODY",
+        "exercise_name": "Machine Rows",
+        "sets": 3,
+        "reps": 10
+    },
+    {
+        "workout_name": "FULL BODY",
+        "exercise_name": "Hamstring Curls",
+        "sets": 3,
+        "reps": 10
+    },
+    {
+        "workout_name": "FULL BODY",
+        "exercise_name": "Lat Pulldowns",
+        "sets": 3,
+        "reps": 10
+    },
+    {
+        "workout_name": "FULL BODY",
+        "exercise_name": "Hack Squats",
+        "sets": 3,
+        "reps": 10
+    }
+]
