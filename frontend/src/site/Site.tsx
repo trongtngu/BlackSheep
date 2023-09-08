@@ -9,6 +9,7 @@ import FullBody from '../pages/FullBody'
 
 import Plans from '../pages/Plans'
 import Forums from '../pages/Forums.tsx'
+import Activity from '../pages/Activity.tsx'
 
 export default function Site() {
   return (
@@ -20,6 +21,7 @@ export default function Site() {
         <Route path ='/template/FullBody' element={<FullBody/>}/>
         <Route path = '/Plans' element = {<Plans/>}/>
         <Route path = '/Forums' element = {<Forums/>}/>
+        <Route path = '/Activity' element = {<Activity/>}/>
       </Routes>
     </>
   )
