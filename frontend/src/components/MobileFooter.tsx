@@ -1,32 +1,42 @@
 import styled from 'styled-components'
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
-import SettingsIcon from '@mui/icons-material/Settings';
+
+import HomeIcon from '@mui/icons-material/Home';
+import ArticleIcon from '@mui/icons-material/Article';
+import PeopleIcon from '@mui/icons-material/People';
+import AnalyticsIcon from '@mui/icons-material/Analytics';
+
+import {useNavigate, useLocation} from 'react-router-dom'
 
 const StyledFooter = styled.div`
-  background: linear-gradient(160deg, #20B2AA 0%, #40E0D0 120%);
   width: 100vw;
   position: fixed;
   bottom: 0px;
   z-index: 99;
-  height: 22vh;
+  height: 70px;
   
   display: flex;
 
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: flex-start;
-  padding-top: 1vh;
+  justify-content: center;
 
-  gap: 3vw;
+  background: white;
+`
+
+const InfoBar = styled.div`
+  display: flex;
   padding-left: 2vw;
   padding-right: 2vw;
+
+  width: 100vw;
+  justify-content: space-between;
+
+  border-top: 1px solid lightgrey;
 `
 
 const InfoBarButton = styled.button`
   background: none;
   border: 0;
-  color: white;
+  color: lightgrey;
 
   display: flex;
   justify-content: center;
@@ -34,24 +44,43 @@ const InfoBarButton = styled.button`
 
   flex-direction: column;
 
-  border-bottom: 2px solid white;
+  font-size: 0.8rem;
+
+  &.active {
+    color: #555555;
+  }
 `
 
 export default function MobileFooter() {
+
+  const navigate = useNavigate()
+
+  const location = useLocation();
+
   return (
     <StyledFooter>
-      <InfoBarButton>
-        <AccountCircleIcon />
-        <div>account</div>
-      </InfoBarButton>
-      <InfoBarButton>
-        <FitnessCenterIcon />
-        <div>workouts</div>
-      </InfoBarButton>
-      <InfoBarButton>
-        <SettingsIcon />
-        <div>settings</div>
-      </InfoBarButton>
+      <InfoBar>
+        <InfoBarButton onClick={()=>{navigate('/home')}} className={location.pathname.startsWith("/home") ? 'active' : ""}>
+          <HomeIcon/>
+          <div>Home</div>
+        </InfoBarButton>
+        <InfoBarButton onClick={()=>{navigate('/plans')}} className={location.pathname.startsWith("/plans") ? 'active' : ""}>
+          <ArticleIcon/>
+          <div>Plans</div>
+        </InfoBarButton>
+        <InfoBarButton onClick={()=>{navigate('/template/FullBody')}} className={location.pathname.startsWith("/template") ? 'active' : ""}>
+          <FitnessCenterIcon/>
+          <div >Workout</div>
+        </InfoBarButton>
+        <InfoBarButton onClick={()=>{navigate('/forums')}} className={location.pathname.startsWith("/forums") ? 'active' : ""}>
+          <PeopleIcon/>
+          <div>Forums</div>
+        </InfoBarButton>
+        <InfoBarButton onClick={()=>{navigate('/activity')}} className={location.pathname.startsWith("/activity") ? 'active' : ""}>
+          <AnalyticsIcon/>
+          <div>Activity</div>
+        </InfoBarButton>
+      </InfoBar>
     </StyledFooter>
   )
 }

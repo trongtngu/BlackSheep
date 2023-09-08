@@ -13,6 +13,15 @@ const Wrapper = styled.div`
   width: 100vw;
 `
 
+const PageTitle = styled.div`
+  font-size: 2rem;
+  font-weight: bold;
+  height: 4rem;
+
+  width: 100vw;
+  padding: 5vw;
+`
+
 const TitleBanner = styled.div`
   display: flex;
   justify-content: space-between;
@@ -177,6 +186,9 @@ export default function PPL3D() {
     <>
     <Navbar/>
     <Wrapper>
+      <PageTitle>
+        Workout
+      </PageTitle>
       <TitleBanner>
         <Title>
           {workoutName}

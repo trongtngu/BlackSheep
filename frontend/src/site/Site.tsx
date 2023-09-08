@@ -5,7 +5,10 @@ import {
 
 import Landing from '../pages/Landing'
 import UserDiscovery from '../pages/UserDiscovery'
-import PPL3D from '../pages/PPL3D'
+import FullBody from '../pages/FullBody'
+
+import Plans from '../pages/Plans'
+
 export default function Site() {
   return (
     <>
@@ -13,7 +16,8 @@ export default function Site() {
         <Route path = '/' element = {<Landing/>}/>
         <Route path = '/userDiscovery' element={<UserDiscovery/>}/>
 
-        <Route path ='/template/PPL3D' element={<PPL3D/>}/>
+        <Route path ='/template/FullBody' element={<FullBody/>}/>
+        <Route path = '/Plans' element = {<Plans/>}/>
       </Routes>
     </>
   )
