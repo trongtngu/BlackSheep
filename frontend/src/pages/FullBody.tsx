@@ -26,13 +26,9 @@ const TitleBanner = styled.div`
   display: flex;
   justify-content: space-between;
 
-  width: 100vw;
-  padding: 0vw 5vw 0vw 5vw;
+  width: 90vw;
 
   align-items: center;
-
-  background: linear-gradient(160deg, #20B2AA 0%, #40E0D0 80%);
-  color: white;
 `
 
 const Title = styled.div`
@@ -52,7 +48,7 @@ const SpreadsheetTitle = styled.div`
   border-bottom: 1px solid rgb(227, 227, 227);
   font-weight: bold;
 
-  padding-top: 1vh;
+  padding-top: 6vh;
   padding-bottom: 1vh;
   width: 90vw;
 `

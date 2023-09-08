@@ -1,11 +1,9 @@
-import React from 'react'
 import styled from 'styled-components'
 
 import Navbar from '../components/Navbar'
 import MobileFooter from '../components/MobileFooter'
 
 const Wrapper = styled.div`
-  
   padding: 5vw;
 `
 
@@ -40,7 +38,7 @@ const PlansCard = styled.div`
 
 const PlansCardImage = styled.div`
   width: 90vw;
-  background: orange;
+  background: linear-gradient(160deg, #20B2AA 0%, #40E0D0 100%);
   height: 60vw;
 
   display: flex;
