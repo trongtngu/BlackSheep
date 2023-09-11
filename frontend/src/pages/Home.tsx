@@ -87,7 +87,7 @@ const PopularHorizontalBoxContainer = styled.div`
 
   flex-direction: row;
 
-  overflow: scroll;
+  overflow-x: scroll;
   padding: 0vh 0vw 1vh 0vw;
 
   gap: 5vw;
