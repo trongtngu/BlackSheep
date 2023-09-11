@@ -131,6 +131,8 @@ const GetStartedButton = styled.button`
   }
 
   cursor: pointer;
+
+  color: #525F7F;
 `
 const ProgressBanner = styled.div`
   width: 100vw;

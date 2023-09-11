@@ -34,6 +34,8 @@ const TitleBanner = styled.div`
 const Title = styled.div`
   font-size: 1.2rem;
   font-weight: bold;
+
+  color: #20B2AA;
 `
 
 const SpreadsheetBanner = styled.div`
@@ -47,8 +49,6 @@ const SpreadsheetBanner = styled.div`
 const SpreadsheetTitle = styled.div`
   border-bottom: 1px solid rgb(227, 227, 227);
   font-weight: bold;
-
-  padding-top: 6vh;
   padding-bottom: 1vh;
   width: 90vw;
 `
