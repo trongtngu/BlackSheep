@@ -82,6 +82,7 @@ const JustStartingButton = styled.button`
 const SectionBanner = styled.div`
   width: 90vw;
 `
+
 const SectionHorizontalBoxContainer = styled.div`
   display: flex;
 
@@ -113,6 +114,9 @@ const SectionBox = styled.div`
   justify-content: center;
   align-items: center;
   font-weight: bold;
+
+  font-size: 2rem;
+  text-align: center;
 `
 
 export default function Home() {
@@ -138,7 +142,7 @@ export default function Home() {
       <SectionBanner>
         <HomeSubtitle>Strength Training</HomeSubtitle>
         <SectionHorizontalBoxContainer>
-          <SectionBox>Starting Strength</SectionBox>
+          <SectionBox>Progressive Overload</SectionBox>
           <SectionBox>PPL</SectionBox>
           <SectionBox>PPL</SectionBox>
           <SectionBox>PPL</SectionBox>
