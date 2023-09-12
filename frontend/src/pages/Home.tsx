@@ -14,6 +14,8 @@ const Wrapper = styled.div`
   flex-direction: column;
 
   gap: 2vh;
+
+  padding-bottom: 20vh;
 `
 
 const HomeTitleBanner = styled.div`
@@ -77,10 +79,10 @@ const JustStartingButton = styled.button`
   margin-top: 2vh;
 `
 
-const PopularBanner = styled.div`
+const SectionBanner = styled.div`
   width: 90vw;
 `
-const PopularHorizontalBoxContainer = styled.div`
+const SectionHorizontalBoxContainer = styled.div`
   display: flex;
 
   width: 90vw;
@@ -93,9 +95,24 @@ const PopularHorizontalBoxContainer = styled.div`
   gap: 5vw;
 `
 
-const PopularBox = styled.div`
-  border: 1px solid black;
+const SectionBox = styled.div`
+  
   min-width: 80vw;
+  min-height: 20vw;
+
+  border: 1px solid #E3E4E6;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(67,137,162,0.08);
+
+  padding: 1vw;
+
+  color: white;
+  background: linear-gradient(160deg, #20B2AA 0%, #40E0D0 100%);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
 `
 
 export default function Home() {
@@ -118,15 +135,66 @@ export default function Home() {
         </JustStartingTitle>
       </JustStartingCard>
 
-      <PopularBanner>
-        <HomeSubtitle>Popular</HomeSubtitle>
-        <PopularHorizontalBoxContainer>
-          <PopularBox>PPL</PopularBox>
-          <PopularBox>PPL</PopularBox>
-          <PopularBox>PPL</PopularBox>
-          <PopularBox>PPL</PopularBox>
-        </PopularHorizontalBoxContainer>
-      </PopularBanner>
+      <SectionBanner>
+        <HomeSubtitle>Strength Training</HomeSubtitle>
+        <SectionHorizontalBoxContainer>
+          <SectionBox>Starting Strength</SectionBox>
+          <SectionBox>PPL</SectionBox>
+          <SectionBox>PPL</SectionBox>
+          <SectionBox>PPL</SectionBox>
+        </SectionHorizontalBoxContainer>
+        <SectionHorizontalBoxContainer>
+          <SectionBox>PPL</SectionBox>
+          <SectionBox>PPL</SectionBox>
+          <SectionBox>PPL</SectionBox>
+          <SectionBox>PPL</SectionBox>
+        </SectionHorizontalBoxContainer>
+      </SectionBanner>
+      <SectionBanner>
+        <HomeSubtitle>Cardio</HomeSubtitle>
+        <SectionHorizontalBoxContainer>
+          <SectionBox>PPL</SectionBox>
+          <SectionBox>PPL</SectionBox>
+          <SectionBox>PPL</SectionBox>
+          <SectionBox>PPL</SectionBox>
+        </SectionHorizontalBoxContainer>
+        <SectionHorizontalBoxContainer>
+          <SectionBox>PPL</SectionBox>
+          <SectionBox>PPL</SectionBox>
+          <SectionBox>PPL</SectionBox>
+          <SectionBox>PPL</SectionBox>
+        </SectionHorizontalBoxContainer>
+      </SectionBanner>
+      <SectionBanner>
+        <HomeSubtitle>Nutrition</HomeSubtitle>
+        <SectionHorizontalBoxContainer>
+          <SectionBox>PPL</SectionBox>
+          <SectionBox>PPL</SectionBox>
+          <SectionBox>PPL</SectionBox>
+          <SectionBox>PPL</SectionBox>
+        </SectionHorizontalBoxContainer>
+        <SectionHorizontalBoxContainer>
+          <SectionBox>PPL</SectionBox>
+          <SectionBox>PPL</SectionBox>
+          <SectionBox>PPL</SectionBox>
+          <SectionBox>PPL</SectionBox>
+        </SectionHorizontalBoxContainer>
+      </SectionBanner>
+      <SectionBanner>
+        <HomeSubtitle>Recovery</HomeSubtitle>
+        <SectionHorizontalBoxContainer>
+          <SectionBox>PPL</SectionBox>
+          <SectionBox>PPL</SectionBox>
+          <SectionBox>PPL</SectionBox>
+          <SectionBox>PPL</SectionBox>
+        </SectionHorizontalBoxContainer>
+        <SectionHorizontalBoxContainer>
+          <SectionBox>PPL</SectionBox>
+          <SectionBox>PPL</SectionBox>
+          <SectionBox>PPL</SectionBox>
+          <SectionBox>PPL</SectionBox>
+        </SectionHorizontalBoxContainer>
+      </SectionBanner>
     </Wrapper>
     <MobileFooter />
   </>)
