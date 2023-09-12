@@ -143,6 +143,8 @@ export default function PPL3D() {
       }
 
       const data = await response.json();
+
+      console.log(data)
       setWorkout(data)
       setWorkoutName(data[0].workout_name)
 

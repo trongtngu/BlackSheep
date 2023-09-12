@@ -2,168 +2,157 @@ import * as sqlite3 from 'sqlite3';
 
 export const initializeDatabase = () => {
     const db = new sqlite3.Database("./db/papaya.db");
-    
-    // Creating Tables
     db.serialize(() => {
-        db.run("CREATE TABLE IF NOT EXISTS workouts (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT)");
-        db.run("CREATE TABLE IF NOT EXISTS exercises (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT)");
-        db.run("CREATE TABLE IF NOT EXISTS workout_exercise_details (detailid INTEGER PRIMARY KEY AUTOINCREMENT, exerciseid INTEGER, sets INTEGER, reps INTEGER, FOREIGN KEY(exerciseid) REFERENCES exercises(id))");
-        db.run("CREATE TABLE IF NOT EXISTS workouts_exercises (workoutID INTEGER, detailID INTEGER, PRIMARY KEY (workoutID, detailID), FOREIGN KEY (detailID) REFERENCES workout_exercise_details(detailid), FOREIGN KEY (workoutID) REFERENCES workouts(id))");
-    });
+        // Users table
+        db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)");
 
-    // Creating Full Body Exercises
+        // Base workouts and exercises tables
+        db.run("CREATE TABLE IF NOT EXISTS base_workouts (id INTEGER PRIMARY KEY AUTOINCREMENT, workoutName TEXT, workoutDetails TEXT)");
+        db.run("CREATE TABLE IF NOT EXISTS base_exercises (id INTEGER PRIMARY KEY AUTOINCREMENT, exerciseName TEXT, exerciseDetails TEXT)");
+
+        // Base workout exercise details table
+        db.run(`CREATE TABLE IF NOT EXISTS base_workout_exercise_details (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                workoutID INTEGER,
+                exerciseID INTEGER,
+                sets INTEGER,
+                reps INTEGER,
+                FOREIGN KEY(workoutID) REFERENCES base_workouts(id),
+                FOREIGN KEY(exerciseID) REFERENCES base_exercises(id)
+            )`);
+
+        // User workouts table
+        db.run(`CREATE TABLE IF NOT EXISTS user_workouts (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                userID INTEGER,
+                baseWorkoutID INTEGER,
+                workoutName TEXT,
+                workoutDetails TEXT,
+                FOREIGN KEY(userID) REFERENCES users(id),
+                FOREIGN KEY(baseWorkoutID) REFERENCES base_workouts(id)
+            )`);
+
+        // User workout exercises table
+        db.run(`CREATE TABLE IF NOT EXISTS user_workout_exercises (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                userWorkoutID INTEGER,
+                exerciseID INTEGER,
+                FOREIGN KEY(userWorkoutID) REFERENCES user_workouts(id),
+                FOREIGN KEY(exerciseID) REFERENCES base_exercises(id)
+            )`);
+
+        // Workout exercise details table for user-specific details
+        db.run(`CREATE TABLE IF NOT EXISTS user_workout_exercise_details (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                userWorkoutExerciseID INTEGER,
+                sets INTEGER,
+                reps INTEGER,
+                FOREIGN KEY(userWorkoutExerciseID) REFERENCES user_workout_exercises(id)
+            )`);
+
+
+
+    })
+
     insert_data_full_body(db)
-
+    insert_data_pull_day(db)        
     insert_data_push_day(db)
-    insert_data_pull_day(db)
     insert_data_legs_day(db)
-
     db.close()
 };
 
 const insert_data_full_body = (db: sqlite3.Database) => {
-    const chestExercises: Array<Array<string>> = [
+    const exercises: Array<Array<string>> = [
         ["Barbell Bench Press", "Chest Push"],
-        ["Cable Chest Flies", "Chest Fly"]
-    ]
-
-    const legExercises: Array<Array<string>> = [
+        ["Cable Chest Flies", "Chest Fly"],
         ["Hack Squats", "Leg Quad"],
-        ["Hamstring Curls", "Leg Hamstring"]
-    ]
-
-    const backExercises: Array<Array<string>> = [
+        ["Hamstring Curls", "Leg Hamstring"],
         ["Lat Pulldowns", "Back Vertical"],
-        ["Machine Rows", "Back Horizontal"]
-    ]
-
-    const sideDeltExercises: Array<Array<string>> = [
-        ["Lateral Raises", "Delt Side"]
-    ]
-
-    const tricepExercises: Array<Array<string>> = [
-        ["Rope Pushdown", "Tricep Isolation"]
-    ]
-
-    const bicepExercises: Array<Array<string>> = [
+        ["Machine Rows", "Back Horizontal"],
+        ["Lateral Raises", "Delt Side"],
+        ["Rope Pushdown", "Tricep Isolation"],
         ["Dumbell Curls", "Bicep Isolation"]
-    ]
+    ];
+
+    // Error handler function
+    const handleError = (context: string, err: Error | null) => {
+        if (err) {
+            console.error(`Error ${context}:`, err.message);
+        }
+    };
 
     // Insert 'FULL BODY' workout
-    db.run("INSERT INTO workouts (name, description) VALUES (?, ?)", ['FULL BODY', 'A complete body workout'], function(this: sqlite3.RunResult, err: Error | null) {
-        if (err) {
-            console.error("Error inserting into workouts:", err.message);
-            return;
-        }
+    db.run("INSERT INTO base_workouts (workoutName, workoutDetails) VALUES (?, ?)", ['FULL BODY', 'A complete body workout'], function (err) {
+        handleError("inserting into base_workouts", err);
 
-        const workoutId = this.lastID;  // Capture the last inserted ID
+        const workoutId = this.lastID;
 
-        const exercises: Array<Array<string>> = [
-            ...chestExercises,
-            ...legExercises,
-            ...backExercises,
-            ...sideDeltExercises,
-            ...tricepExercises,
-            ...bicepExercises
-        ];
+        exercises.forEach(([exerciseName, exerciseDetails]) => {
+            db.run("INSERT OR IGNORE INTO base_exercises (exerciseName, exerciseDetails) VALUES (?, ?)", [exerciseName, exerciseDetails], function (err) {
+                handleError(`inserting ${exerciseName} into base_exercises`, err);
 
-        exercises.forEach(([name, description]) => {
-            db.run("INSERT OR IGNORE INTO exercises (name, description) VALUES (?, ?)", [name, description], function(err: Error | null) {
-                if (err) {
-                    console.error("Error inserting into exercises:", err.message);
-                    return;
-                }
-
-                db.get("SELECT id FROM exercises WHERE name = ? AND description = ?", [name, description], (err: Error | null, row: { id: number }) => {
-                    if (err) {
-                        console.error("Error fetching exercise ID:", err.message);
-                        return;
-                    }
+                db.get(`SELECT id FROM base_exercises WHERE exerciseName = ? AND exerciseDetails = ?`, [exerciseName, exerciseDetails], (err, row: { id: number }) => {
+                    handleError(`fetching ID for ${exerciseName}`, err);
 
                     const exerciseId = row.id;
 
-                    // TODO: Depending on exercise, adjust sets and reps.
+                    // Assuming sets and reps are the same for all exercises in this example.
+                    // However, you can use conditionals or a switch case to vary them based on the exercise if needed.
                     let sets = 3;
                     let reps = 10;
 
-                    db.run("INSERT INTO workout_exercise_details (exerciseid, sets, reps) VALUES (?, ?, ?)", [exerciseId, sets, reps], function(err: Error | null) {
-                        if (err) {
-                            console.error("Error inserting into workout_exercise_details:", err.message);
-                            return;
-                        }
-
-                        const detailId = this.lastID;
-
-                        db.run("INSERT INTO workouts_exercises (workoutID, detailID) VALUES (?, ?)", [workoutId, detailId], (err: Error | null) => {
-                            if (err) {
-                                console.error("Error linking workout with exercise details:", err.message);
-                            }
-                        });
+                    db.run("INSERT INTO base_workout_exercise_details (workoutID, exerciseID, sets, reps) VALUES (?, ?, ?, ?)", [workoutId, exerciseId, sets, reps], function (err) {
+                        handleError(`inserting details for ${exerciseName}`, err);
                     });
                 });
             });
         });
     });
-}
+};
+
 
 const insert_data_pull_day = (db: sqlite3.Database) => {
     const pullExercises: Array<[string, string, number, number]> = [
         ["Deadlifts", "Primary compound lift", 1, 5],
         ["Barbell rows", "Primary rowing exercise", 4, 5],
-        ["Pulldowns OR Pullups OR Chinups", "Vertical pulling movement", 3, 10],
-        ["Seated cable rows OR Chest supported rows", "Rowing movement", 3, 10],
+        ["Pulldowns", "Vertical pulling movement", 3, 10],
+        ["Seated cable rows", "Rowing movement", 3, 10],
         ["Face pulls", "Rear deltoid and upper trap emphasis", 5, 15],
         ["Hammer curls", "Brachialis and forearm emphasis", 4, 10],
         ["Dumbbell curls", "Bicep isolation", 4, 10]
     ];
 
-    // Insert 'PULL' workout
-    db.run("INSERT INTO workouts (name, description) VALUES (?, ?)", ['PULL', 'Pull focused workout'], function(this: sqlite3.RunResult, err: Error | null) {
+    // Error handler function
+    const handleError = (context: string, err: Error | null) => {
         if (err) {
-            console.error("Error inserting into workouts:", err.message);
-            return;
+            console.error(`Error ${context}:`, err.message);
         }
+    };
 
-        const workoutId = this.lastID;  // Capture the last inserted ID
+    // Insert 'PULL' workout
+    db.run("INSERT INTO base_workouts (workoutName, workoutDetails) VALUES (?, ?)", ['PULL', 'Pull focused workout'], function (err) {
+        handleError("inserting into base_workouts", err);
 
-        pullExercises.forEach(([name, description, sets, reps]) => {
-            // Insert or use existing exercise
-            db.run("INSERT OR IGNORE INTO exercises (name, description) VALUES (?, ?)", [name, description], function(err: Error | null) {
-                if (err) {
-                    console.error("Error inserting into exercises:", err.message);
-                    return;
-                }
+        const workoutId = this.lastID;
 
-                // Fetch exercise ID
-                db.get("SELECT id FROM exercises WHERE name = ? AND description = ?", [name, description], (err: Error | null, row: { id: number }) => {
-                    if (err) {
-                        console.error("Error fetching exercise ID:", err.message);
-                        return;
-                    }
+        pullExercises.forEach(([exerciseName, exerciseDetails, sets, reps]) => {
+            db.run("INSERT OR IGNORE INTO base_exercises (exerciseName, exerciseDetails) VALUES (?, ?)", [exerciseName, exerciseDetails], function (err) {
+                handleError(`inserting ${exerciseName} into base_exercises`, err);
+
+                db.get(`SELECT id FROM base_exercises WHERE exerciseName = ? AND exerciseDetails = ?`, [exerciseName, exerciseDetails], (err, row: { id: number }) => {
+                    handleError(`fetching ID for ${exerciseName}`, err);
 
                     const exerciseId = row.id;
 
-                    // Insert exercise details
-                    db.run("INSERT INTO workout_exercise_details (exerciseid, sets, reps) VALUES (?, ?, ?)", [exerciseId, sets, reps], function(err: Error | null) {
-                        if (err) {
-                            console.error("Error inserting into workout_exercise_details:", err.message);
-                            return;
-                        }
-
-                        const detailId = this.lastID;
-
-                        // Link workout with exercise details
-                        db.run("INSERT INTO workouts_exercises (workoutID, detailID) VALUES (?, ?)", [workoutId, detailId], (err: Error | null) => {
-                            if (err) {
-                                console.error("Error linking workout with exercise details:", err.message);
-                            }
-                        });
+                    db.run("INSERT INTO base_workout_exercise_details (workoutID, exerciseID, sets, reps) VALUES (?, ?, ?, ?)", [workoutId, exerciseId, sets, reps], function (err) {
+                        handleError(`inserting details for ${exerciseName}`, err);
                     });
                 });
             });
         });
     });
-}
+};
+
 
 const insert_data_push_day = (db: sqlite3.Database) => {
     const pushExercises: Array<[string, string, number, number]> = [
@@ -171,58 +160,42 @@ const insert_data_push_day = (db: sqlite3.Database) => {
         ["Overhead press", "Primary shoulder compound lift", 4, 5],
         ["Incline dumbbell press", "Upper chest emphasis", 3, 10],
         ["Triceps pushdowns", "Tricep isolation", 3, 10],
-        ["Lateral raises", "Side deltoid emphasis", 3, 17],  // Note: This is done in a superset, so you may need to adapt this for the database design
+        ["Lateral raises", "Side deltoid emphasis", 3, 17],
         ["Overhead triceps extensions", "Long head tricep emphasis", 3, 10],
         ["Lateral raises", "Side deltoid emphasis in superset", 3, 17]
     ];
 
-    // Insert 'PUSH' workout
-    db.run("INSERT INTO workouts (name, description) VALUES (?, ?)", ['PUSH', 'Push focused workout'], function(this: sqlite3.RunResult, err: Error | null) {
+    // Error handler function
+    const handleError = (context: string, err: Error | null) => {
         if (err) {
-            console.error("Error inserting into workouts:", err.message);
-            return;
+            console.error(`Error ${context}:`, err.message);
         }
+    };
 
-        const workoutId = this.lastID;  // Capture the last inserted ID
+    // Insert 'PUSH' workout
+    db.run("INSERT INTO base_workouts (workoutName, workoutDetails) VALUES (?, ?)", ['PUSH', 'Push focused workout'], function (err) {
+        handleError("inserting into base_workouts", err);
 
-        pushExercises.forEach(([name, description, sets, reps]) => {
-            // Insert or use existing exercise
-            db.run("INSERT OR IGNORE INTO exercises (name, description) VALUES (?, ?)", [name, description], function(err: Error | null) {
-                if (err) {
-                    console.error("Error inserting into exercises:", err.message);
-                    return;
-                }
+        const workoutId = this.lastID;
 
-                // Fetch exercise ID
-                db.get("SELECT id FROM exercises WHERE name = ? AND description = ?", [name, description], (err: Error | null, row: { id: number }) => {
-                    if (err) {
-                        console.error("Error fetching exercise ID:", err.message);
-                        return;
-                    }
+        pushExercises.forEach(([exerciseName, exerciseDetails, sets, reps]) => {
+            db.run("INSERT OR IGNORE INTO base_exercises (exerciseName, exerciseDetails) VALUES (?, ?)", [exerciseName, exerciseDetails], function (err) {
+                handleError(`inserting ${exerciseName} into base_exercises`, err);
+
+                db.get(`SELECT id FROM base_exercises WHERE exerciseName = ? AND exerciseDetails = ?`, [exerciseName, exerciseDetails], (err, row: { id: number }) => {
+                    handleError(`fetching ID for ${exerciseName}`, err);
 
                     const exerciseId = row.id;
 
-                    // Insert exercise details
-                    db.run("INSERT INTO workout_exercise_details (exerciseid, sets, reps) VALUES (?, ?, ?)", [exerciseId, sets, reps], function(err: Error | null) {
-                        if (err) {
-                            console.error("Error inserting into workout_exercise_details:", err.message);
-                            return;
-                        }
-
-                        const detailId = this.lastID;
-
-                        // Link workout with exercise details
-                        db.run("INSERT INTO workouts_exercises (workoutID, detailID) VALUES (?, ?)", [workoutId, detailId], (err: Error | null) => {
-                            if (err) {
-                                console.error("Error linking workout with exercise details:", err.message);
-                            }
-                        });
+                    db.run("INSERT INTO base_workout_exercise_details (workoutID, exerciseID, sets, reps) VALUES (?, ?, ?, ?)", [workoutId, exerciseId, sets, reps], function (err) {
+                        handleError(`inserting details for ${exerciseName}`, err);
                     });
                 });
             });
         });
     });
-}
+};
+
 
 const insert_data_legs_day = (db: sqlite3.Database) => {
     const legsExercises: Array<[string, string, number, number]> = [
@@ -233,50 +206,35 @@ const insert_data_legs_day = (db: sqlite3.Database) => {
         ["Calf raises", "Calf muscle isolation", 5, 10]
     ];
 
-    // Insert 'LEGS' workout
-    db.run("INSERT INTO workouts (name, description) VALUES (?, ?)", ['LEGS', 'Leg focused workout'], function(this: sqlite3.RunResult, err: Error | null) {
+    // Error handler function
+    const handleError = (context: string, err: Error | null) => {
         if (err) {
-            console.error("Error inserting into workouts:", err.message);
-            return;
+            console.error(`Error ${context}:`, err.message);
         }
+    };
 
-        const workoutId = this.lastID;  // Capture the last inserted ID
+    // Insert 'LEGS' workout
+    db.run("INSERT INTO base_workouts (workoutName, workoutDetails) VALUES (?, ?)", ['LEGS', 'Leg focused workout'], function (err) {
+        handleError("inserting into base_workouts", err);
 
-        legsExercises.forEach(([name, description, sets, reps]) => {
-            // Insert or use existing exercise
-            db.run("INSERT OR IGNORE INTO exercises (name, description) VALUES (?, ?)", [name, description], function(err: Error | null) {
-                if (err) {
-                    console.error("Error inserting into exercises:", err.message);
-                    return;
-                }
+        const workoutId = this.lastID;
 
-                // Fetch exercise ID
-                db.get("SELECT id FROM exercises WHERE name = ? AND description = ?", [name, description], (err: Error | null, row: { id: number }) => {
-                    if (err) {
-                        console.error("Error fetching exercise ID:", err.message);
-                        return;
-                    }
+        legsExercises.forEach(([exerciseName, exerciseDetails, sets, reps]) => {
+            db.run("INSERT OR IGNORE INTO base_exercises (exerciseName, exerciseDetails) VALUES (?, ?)", [exerciseName, exerciseDetails], function (err) {
+                handleError(`inserting ${exerciseName} into base_exercises`, err);
+
+                db.get(`SELECT id FROM base_exercises WHERE exerciseName = ? AND exerciseDetails = ?`, [exerciseName, exerciseDetails], (err, row: { id: number }) => {
+                    handleError(`fetching ID for ${exerciseName}`, err);
 
                     const exerciseId = row.id;
 
-                    // Insert exercise details
-                    db.run("INSERT INTO workout_exercise_details (exerciseid, sets, reps) VALUES (?, ?, ?)", [exerciseId, sets, reps], function(err: Error | null) {
-                        if (err) {
-                            console.error("Error inserting into workout_exercise_details:", err.message);
-                            return;
-                        }
-
-                        const detailId = this.lastID;
-
-                        // Link workout with exercise details
-                        db.run("INSERT INTO workouts_exercises (workoutID, detailID) VALUES (?, ?)", [workoutId, detailId], (err: Error | null) => {
-                            if (err) {
-                                console.error("Error linking workout with exercise details:", err.message);
-                            }
-                        });
+                    db.run("INSERT INTO base_workout_exercise_details (workoutID, exerciseID, sets, reps) VALUES (?, ?, ?, ?)", [workoutId, exerciseId, sets, reps], function (err) {
+                        handleError(`inserting details for ${exerciseName}`, err);
                     });
                 });
             });
         });
     });
-}
+};
+
+
