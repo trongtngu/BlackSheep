@@ -88,6 +88,47 @@ const SignupButton = styled.button`
 export default function Signup() {
 
   const navigate = useNavigate()
+
+  const [email, setEmail] = React.useState("")
+  const [firstName, setFirstName] = React.useState("")
+  const [lastName, setLastName] = React.useState("")
+  const [password, setPassword] = React.useState("")
+
+  const handleSignup = async () => {
+
+    const signupDetails = {
+      email: email,
+      firstName: firstName,
+      lastName: lastName,
+      password: password,
+    }
+
+    console.log(JSON.stringify(signupDetails))
+
+    try {
+      const response = await fetch("", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(signupDetails)
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        console.error("Server Error:", data.message || "Unknown Error");
+        return;
+      }
+      
+      console.log("Signup Success", data)
+
+      
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <>
     <Navbar />
@@ -101,12 +142,12 @@ export default function Signup() {
      <SignupBanner>
       <SignupTitle>Sign up now</SignupTitle>
       <SignupFieldsContainer>
-        <SignupField placeholder={"First Name"}></SignupField>
-        <SignupField placeholder={"Last Name"}></SignupField>
-        <SignupField placeholder={"Email"}></SignupField>
-        <SignupField placeholder={"Password"}></SignupField>
+        <SignupField placeholder={"First Name"} onChange={(e)=>{setFirstName(e.target.value)}}/>
+        <SignupField placeholder={"Last Name"} onChange={(e)=>{setLastName(e.target.value)}}/>
+        <SignupField placeholder={"Email"} onChange={(e)=>{setEmail(e.target.value)}}/>
+        <SignupField placeholder={"Password"} onChange={(e)=>{setPassword(e.target.value)}}/>
       </SignupFieldsContainer>
-      <SignupButton>Sign Up</SignupButton>
+      <SignupButton onClick={()=>{handleSignup()}}>Sign Up</SignupButton>
      </SignupBanner>
     </Wrapper>
     </>
