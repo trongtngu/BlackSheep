@@ -12,6 +12,9 @@ import Forums from '../pages/Forums.tsx'
 import Activity from '../pages/Activity.tsx'
 import Home from '../pages/Home.tsx'
 
+import Signup from '../pages/Signup.tsx'
+import Login from '../pages/Login.tsx'
+
 export default function Site() {
   return (
     <>
@@ -24,6 +27,9 @@ export default function Site() {
         <Route path = '/Forums' element = {<Forums/>}/>
         <Route path = '/Activity' element = {<Activity/>}/>
         <Route path = '/home' element = {<Home/>}/>
+
+        <Route path = '/signup' element={<Signup/>}/>
+        <Route path = '/login' element={<Login/>}/>
       </Routes>
     </>
   )

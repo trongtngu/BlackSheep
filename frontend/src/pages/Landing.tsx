@@ -456,7 +456,7 @@ function Landing() {
           <LandingBannerDescription>
             <div>Lost in the gym or super busy?</div>
             <div>Find a workout that fits you.</div>
-            <GetStartedButton onClick={()=>navigate('/userDiscovery')}>
+            <GetStartedButton onClick={()=>navigate('/signup')}>
               Get Started ➜
             </GetStartedButton>
           </LandingBannerDescription>
