@@ -1,10 +1,10 @@
 import express, {Request, Response} from 'express';
 import { initializeDatabase } from './db/initDB';
-
+const bcrypt = require('bcrypt');
 import sqlite3 from 'sqlite3'
 const app = express();
-
-// initializeDatabase()
+app.use(express.json());
+initializeDatabase()
 
 app.get('/', (req: Request, res: Response) => {
   res.json('Hello World')
@@ -61,6 +61,96 @@ app.get('/api/workout', (req, res) => {
   })
 })
 
+app.post('/api/user/signup', async (req, res) =>{
+  
+  const username = req.body.username;
+  const email = req.body.email;
+  const password = req.body.password;
+
+  const db: sqlite3.Database = new sqlite3.Database("./db/papaya.db");
+
+  try {
+    // Hash the password before storing it
+    const hashedPassword = await bcrypt.hash(password, 10); // The number 10 here is the saltRounds, you can adjust it if needed
+
+    // Use parameterized queries
+    const query = `
+      INSERT INTO users (username, email, password)
+      VALUES (?, ?, ?)
+    `;
+
+    db.run(query, [username, email, hashedPassword], function(err: Error | null) {
+      db.close();
+
+      if (err) {
+        res.status(500).send({ error: err.message });
+        return;
+      }
+
+      res.status(200).send({ message: "Successful Signup" });
+    });
+
+  } catch (error) {
+    db.close();
+    res.status(500).send({ error: "An error occurred during signup." });
+  }
+})
+
+app.post('/api/user/login', async (req, res) =>{
+  
+  const email = req.body.email;
+  const password = req.body.password;
+
+  const db: sqlite3.Database = new sqlite3.Database("./db/papaya.db");
+
+  try {
+    // Use parameterized queries
+    const query = `SELECT password FROM users WHERE email = ?`;
+
+    db.get(query, [email], async (err: Error | null , row: {password: string}) => {
+
+      if (err) {
+        db.close();
+        res.status(500).send({ error: err.message });
+        return;
+      }
+
+      if (!row) {
+        db.close();
+        res.status(404).send({error: "User not found"})
+        return;
+      }
+
+      const storedHashedPassword = row.password;
+
+      const isMatch = await bcrypt.compare(password, storedHashedPassword);
+
+      if (isMatch) {
+        // Passwords match
+        const getUserIdQuery = `SELECT id FROM users WHERE email=(?)`
+        db.get(getUserIdQuery, [email], async (err: Error | null, row: {id: number}) =>{
+          db.close();
+          if (err) {
+            res.status(500).send({error: "Could not find user ID"});
+            return;
+          }
+          
+          const userID = row.id;
+          res.status(200).send({ message: "Login successful", userID: userID});
+        })
+        
+      } else {
+        // Passwords don't match
+        db.close();
+        res.status(401).send({ error: "Invalid password" });
+      }
+    });
+
+  } catch (error) {
+    db.close();
+    res.status(500).send({ error: "An error occurred during login." });
+  }
+})
 
 app.listen(3000, ()=> {
     console.log("Server running on http://localhost:3000/")

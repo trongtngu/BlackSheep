@@ -82,7 +82,14 @@ const SignupButton = styled.button`
   border-radius: 5px;
 
   color: white;
- font-size: 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+`
+
+const SignupError = styled.div`
+  color: red;
+  font-size: 0.8rem;
+  width: 100%;
 `
 
 export default function Signup() {
@@ -90,23 +97,33 @@ export default function Signup() {
   const navigate = useNavigate()
 
   const [email, setEmail] = React.useState("")
-  const [firstName, setFirstName] = React.useState("")
-  const [lastName, setLastName] = React.useState("")
+  const [username, setUsername] = React.useState("")
   const [password, setPassword] = React.useState("")
+
+  const [emailError, setEmailError] = React.useState("")
+  const [usernameError, setUsernameError] = React.useState("")
+  const [passwordError, setPasswordError] = React.useState("")
 
   const handleSignup = async () => {
 
     const signupDetails = {
-      email: email,
-      firstName: firstName,
-      lastName: lastName,
-      password: password,
+      "username": username,
+      "email": email,
+      "password": password,
     }
 
-    console.log(JSON.stringify(signupDetails))
+    if (email === "") {
+      setEmailError("Please enter an email")
+    }
+    if (username === "") {
+      setUsernameError("Please enter your first name")
+    }
+    if (password === "") {
+      setPasswordError("Please enter a password")
+    }
 
     try {
-      const response = await fetch("", {
+      const response = await fetch("/api/user/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -142,10 +159,12 @@ export default function Signup() {
      <SignupBanner>
       <SignupTitle>Sign up now</SignupTitle>
       <SignupFieldsContainer>
-        <SignupField placeholder={"First Name"} onChange={(e)=>{setFirstName(e.target.value)}}/>
-        <SignupField placeholder={"Last Name"} onChange={(e)=>{setLastName(e.target.value)}}/>
+        <SignupError>{usernameError}</SignupError>
+        <SignupField placeholder={"Username"} onChange={(e)=>{setUsername(e.target.value)}}/>
+        <SignupError>{emailError}</SignupError>
         <SignupField placeholder={"Email"} onChange={(e)=>{setEmail(e.target.value)}}/>
-        <SignupField placeholder={"Password"} onChange={(e)=>{setPassword(e.target.value)}}/>
+        <SignupError>{passwordError}</SignupError>
+        <SignupField type = 'password' placeholder={"Password"} onChange={(e)=>{setPassword(e.target.value)}}/>
       </SignupFieldsContainer>
       <SignupButton onClick={()=>{handleSignup()}}>Sign Up</SignupButton>
      </SignupBanner>

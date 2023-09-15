@@ -4,7 +4,7 @@ export const initializeDatabase = () => {
     const db = new sqlite3.Database("./db/papaya.db");
     db.serialize(() => {
         // Users table
-        db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)");
+        db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, email TEXT, password TEXT)");
 
         // Base workouts and exercises tables
         db.run("CREATE TABLE IF NOT EXISTS base_workouts (id INTEGER PRIMARY KEY AUTOINCREMENT, workoutName TEXT, workoutDetails TEXT)");

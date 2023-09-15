@@ -23,10 +23,10 @@ export default function Site() {
         <Route path = '/userDiscovery' element={<UserDiscovery/>}/>
 
         <Route path ='/template/FullBody' element={<FullBody/>}/>
-        <Route path = '/Plans' element = {<Plans/>}/>
-        <Route path = '/Forums' element = {<Forums/>}/>
-        <Route path = '/Activity' element = {<Activity/>}/>
-        <Route path = '/home' element = {<Home/>}/>
+        <Route path = '/:userID/Plans' element = {<Plans/>}/>
+        <Route path = '/:userID/Forums' element = {<Forums/>}/>
+        <Route path = '/:userID/Activity' element = {<Activity/>}/>
+        <Route path = '/:userID/home' element = {<Home/>}/>
 
         <Route path = '/signup' element={<Signup/>}/>
         <Route path = '/login' element={<Login/>}/>
