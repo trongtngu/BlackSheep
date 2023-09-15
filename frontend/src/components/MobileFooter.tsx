@@ -6,7 +6,7 @@ import ArticleIcon from '@mui/icons-material/Article';
 import PeopleIcon from '@mui/icons-material/People';
 import AnalyticsIcon from '@mui/icons-material/Analytics';
 
-import {useNavigate, useLocation} from 'react-router-dom'
+import {useNavigate, useLocation, useParams} from 'react-router-dom'
 
 const StyledFooter = styled.div`
   width: 100vw;
@@ -56,27 +56,27 @@ export default function MobileFooter() {
   const navigate = useNavigate()
 
   const location = useLocation();
-
+  const { userID } = useParams();
   return (
     <StyledFooter>
       <InfoBar>
-        <InfoBarButton onClick={()=>{navigate('/home')}} className={location.pathname.startsWith("/home") ? 'active' : ""}>
+        <InfoBarButton onClick={()=>{navigate(`/${userID}/home`)}} className={location.pathname.startsWith(`/${userID}/home`) ? 'active' : ""}>
           <HomeIcon/>
           <div>Home</div>
         </InfoBarButton>
-        <InfoBarButton onClick={()=>{navigate('/plans')}} className={location.pathname.startsWith("/plans") ? 'active' : ""}>
+        <InfoBarButton onClick={()=>{navigate(`/${userID}/plans`)}} className={location.pathname.startsWith(`/${userID}/plans`) ? 'active' : ""}>
           <ArticleIcon/>
           <div>Plans</div>
         </InfoBarButton>
-        <InfoBarButton onClick={()=>{navigate('/template/FullBody')}} className={location.pathname.startsWith("/template") ? 'active' : ""}>
+        <InfoBarButton onClick={()=>{navigate(`/${userID}/savedWorkouts`)}} className={location.pathname.startsWith(`/${userID}/savedWorkouts`) ? 'active' : ""}>
           <FitnessCenterIcon/>
-          <div >Workout</div>
+          <div>Workout</div>
         </InfoBarButton>
-        <InfoBarButton onClick={()=>{navigate('/forums')}} className={location.pathname.startsWith("/forums") ? 'active' : ""}>
+        <InfoBarButton onClick={()=>{navigate(`/${userID}/forums`)}} className={location.pathname.startsWith(`/${userID}/forums`) ? 'active' : ""}>
           <PeopleIcon/>
           <div>Forums</div>
         </InfoBarButton>
-        <InfoBarButton onClick={()=>{navigate('/activity')}} className={location.pathname.startsWith("/activity") ? 'active' : ""}>
+        <InfoBarButton onClick={()=>{navigate(`/${userID}/activity`)}} className={location.pathname.startsWith(`/${userID}/activity`) ? 'active' : ""}>
           <AnalyticsIcon/>
           <div>Activity</div>
         </InfoBarButton>
