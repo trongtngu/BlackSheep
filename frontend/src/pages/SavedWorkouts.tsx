@@ -5,6 +5,8 @@ import MobileFooter from '../components/MobileFooter'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 
+import {useNavigate, useParams} from 'react-router-dom';
+
 const Wrapper = styled.div`
 
   width: 100vw;
@@ -75,7 +77,7 @@ const SavedWorkoutCardInfo = styled.div`
   border-radius: inherit;
 
   height: 100%;
-  width: 70%;
+  width: 60%;
   padding: 1vw;
   display: flex;
   justify-content: center;
@@ -102,13 +104,19 @@ const SavedWorkoutCardSettings = styled.div`
   color: inherit;
 `
 export default function SavedWorkouts() {
+
+  const navigate = useNavigate()
+  const { userID } = useParams();
+
   return (<>
     <Navbar />
     <Wrapper>
       <div>
         <SavedTitle>
-          <div>Saved Workouts</div> <CreateNewWorkoutButton><AddBoxIcon/></CreateNewWorkoutButton>
-          <></>
+          <div>Saved Workouts</div> 
+          <CreateNewWorkoutButton onClick={()=>{navigate(`/${userID}/createWorkout`)}}>
+            <AddBoxIcon/>
+          </CreateNewWorkoutButton>
         </SavedTitle>
       </div>
 
