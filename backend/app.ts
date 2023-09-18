@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 import sqlite3 from 'sqlite3'
 const app = express();
 app.use(express.json());
-initializeDatabase()
+// initializeDatabase()
 
 app.get('/', (req: Request, res: Response) => {
   res.json('Hello World')
@@ -152,6 +152,29 @@ app.post('/api/user/login', async (req, res) =>{
   }
 })
 
+/**USER PLANS */
+
+app.get("/api/templates", (req, res) => {
+  const db: sqlite3.Database = new sqlite3.Database("./db/papaya.db");
+  console.log("I RAN")
+  try {
+    const query = `SELECT * FROM base_templates`;
+
+    db.all(query, (err: Error | null, rows: Array<any>) => {
+      db.close();
+  
+      if (err) {
+        res.status(500).send({error: err.message})
+        return;
+      }
+  
+      res.status(200).send(rows)
+    })
+  } catch (err) {
+    res.status(500).send({error: "Could not fetch templates"})
+  }
+  
+}) 
 app.listen(3000, ()=> {
     console.log("Server running on http://localhost:3000/")
 })

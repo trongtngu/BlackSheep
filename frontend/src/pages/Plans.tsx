@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import Navbar from '../components/Navbar'
 import MobileFooter from '../components/MobileFooter'
 
+import React from 'react'
+
 const Wrapper = styled.div`
   padding: 5vw;
 `
@@ -86,6 +88,28 @@ const PlansCardTag = styled.div`
   border-radius: 5px;
 `
 export default function Plans() {
+
+  const [templates, setTemplates] = React.useState([])
+
+  const getAllTemplates = async () => {
+    try{
+      const response = await fetch("/api/templates")
+      if(!response.ok) {
+        throw new Error("Fetch Error")
+      }
+
+      const data = await response.json();
+
+      console.log(data)
+
+      setTemplates(data)
+    } catch (error) {
+      console.error("Error Fetching Templates", error)
+    }
+  }
+  React.useEffect(()=>{
+    getAllTemplates()
+  },[])
   return (
   <>
     <Navbar />
@@ -97,6 +121,28 @@ export default function Plans() {
       </PlansBanner>
 
       <PlansCardContainer>
+        {templates.map((item, idx)=>{
+          return(
+          <PlansCard key={idx}>
+            <PlansCardImage>
+              {item.templateName}
+            </PlansCardImage>
+
+            <PlansCardTitle>
+              Full Body
+            </PlansCardTitle>
+            <PlansCardBody>
+              {item.templateDetails}
+            </PlansCardBody>
+
+            <PlansCardTagContainer>
+              <PlansCardTag>
+                All levels
+              </PlansCardTag>
+            </PlansCardTagContainer>
+          </PlansCard>
+          )
+        })}
         <PlansCard>
           <PlansCardImage>
             Balance
