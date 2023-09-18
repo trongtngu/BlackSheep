@@ -24,7 +24,7 @@ export default function Site() {
         <Route path = '/' element = {<Landing/>}/>
         <Route path = '/userDiscovery' element={<UserDiscovery/>}/>
 
-        <Route path ='/template/FullBody' element={<FullBody/>}/>
+        <Route path ='/:userID/template/FullBody' element={<FullBody/>}/>
 
         <Route path = '/:userID/savedWorkouts' element={<SavedWorkouts/>}/>
         <Route path = '/:userID/createWorkout' element={<CreateWorkout/>}/>

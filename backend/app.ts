@@ -2,9 +2,17 @@ import express, {Request, Response} from 'express';
 import { initializeDatabase } from './db/initDB';
 const bcrypt = require('bcrypt');
 import sqlite3 from 'sqlite3'
+import fs from 'fs'
+
 const app = express();
 app.use(express.json());
-// initializeDatabase()
+
+
+// Only runs if database does not already exist
+if (!fs.existsSync("./db/papaya.db")) {
+  initializeDatabase()
+  console.log("Database initialised")
+}
 
 app.get('/', (req: Request, res: Response) => {
   res.json('Hello World')

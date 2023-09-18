@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar'
 import MobileFooter from '../components/MobileFooter'
 
 import React from 'react'
+import {useNavigate, useParams} from 'react-router-dom'
 
 const Wrapper = styled.div`
   padding: 5vw;
@@ -36,6 +37,8 @@ const PlansCard = styled.div`
   border: 1px solid #E3E4E6;
   border-radius: 20px;
   box-shadow: 0 2px 12px rgba(67,137,162,0.08);
+
+  cursor: pointer;
 `
 
 const PlansCardImage = styled.div`
@@ -77,6 +80,10 @@ const PlansCardTagContainer = styled.div`
   border-bottom-right-radius: inherit;
 
   display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 2vw;
 `
 
 const PlansCardTag = styled.div`
@@ -87,9 +94,16 @@ const PlansCardTag = styled.div`
 
   border-radius: 5px;
 `
+
+type Template = {
+  templateName: string;
+  templateDetails: string;
+}
 export default function Plans() {
 
-  const [templates, setTemplates] = React.useState([])
+  const navigate = useNavigate()
+
+  const [templates, setTemplates] = React.useState<Template[]>([])
 
   const getAllTemplates = async () => {
     try{
@@ -110,6 +124,13 @@ export default function Plans() {
   React.useEffect(()=>{
     getAllTemplates()
   },[])
+
+  const { userID } = useParams();
+  const handleRouting = (templateName: string) => {
+    const templateRoute = templateName.replace(/ /g, "")
+
+    navigate(`/${userID}/template/${templateRoute}`)
+  }
   return (
   <>
     <Navbar />
@@ -123,7 +144,7 @@ export default function Plans() {
       <PlansCardContainer>
         {templates.map((item, idx)=>{
           return(
-          <PlansCard key={idx}>
+          <PlansCard key={idx} onClick={()=>{handleRouting(`${item.templateName}`)}}>
             <PlansCardImage>
               {item.templateName}
             </PlansCardImage>
@@ -137,71 +158,13 @@ export default function Plans() {
 
             <PlansCardTagContainer>
               <PlansCardTag>
-                All levels
+                All Levels
               </PlansCardTag>
             </PlansCardTagContainer>
           </PlansCard>
           )
         })}
-        <PlansCard>
-          <PlansCardImage>
-            Balance
-          </PlansCardImage>
-
-          <PlansCardTitle>
-            Full Body
-          </PlansCardTitle>
-          <PlansCardBody>
-            A workout plan that targets all muscle groups in a single session.
-            Don't have to worry about missing a body part for the week.
-          </PlansCardBody>
-
-          <PlansCardTagContainer>
-            <PlansCardTag>
-              All levels
-            </PlansCardTag>
-          </PlansCardTagContainer>
-        </PlansCard>
-
-        <PlansCard>
-          <PlansCardImage>
-            Balance
-          </PlansCardImage>
-
-          <PlansCardTitle>
-            Full Body
-          </PlansCardTitle>
-          <PlansCardBody>
-            A workout plan that targets all muscle groups in a single session.
-            Don't have to worry about missing a body part for the week.
-          </PlansCardBody>
-
-          <PlansCardTagContainer>
-            <PlansCardTag>
-              All levels
-            </PlansCardTag>
-          </PlansCardTagContainer>
-        </PlansCard>
-
-        <PlansCard>
-          <PlansCardImage>
-            Balance
-          </PlansCardImage>
-
-          <PlansCardTitle>
-            Full Body
-          </PlansCardTitle>
-          <PlansCardBody>
-            A workout plan that targets all muscle groups in a single session.
-            Don't have to worry about missing a body part for the week.
-          </PlansCardBody>
-
-          <PlansCardTagContainer>
-            <PlansCardTag>
-              All levels
-            </PlansCardTag>
-          </PlansCardTagContainer>
-        </PlansCard>
+        
       </PlansCardContainer>
     </Wrapper>
     <MobileFooter />

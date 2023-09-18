@@ -114,12 +114,15 @@ export default function Signup() {
 
     if (email === "") {
       setEmailError("Please enter an email")
+      return;
     }
     if (username === "") {
       setUsernameError("Please enter your first name")
+      return;
     }
     if (password === "") {
       setPasswordError("Please enter a password")
+      return;
     }
 
     try {
