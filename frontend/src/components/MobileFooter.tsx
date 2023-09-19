@@ -51,13 +51,49 @@ const InfoBarButton = styled.button`
   }
 `
 
-export default function MobileFooter() {
+const StartBanner = styled.div`
+  position: fixed;
+  bottom: 90px;
+  z-index: 99;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+`
+
+const StartButton = styled.button`
+  border: 0;
+  border-radius: 5px;
+
+  color: white;
+  background: linear-gradient(160deg, black 0%, #333333 70%);
+
+  font-size: 1rem;
+
+  padding: 1vh 10vw 1vh 10vw;
+`
+interface MobileFooterProps {
+  planName?: string;
+}
+
+export default function MobileFooter({ planName }: MobileFooterProps) {
 
   const navigate = useNavigate()
 
   const location = useLocation();
   const { userID } = useParams();
-  return (
+
+  return (<>
+    {
+      planName &&
+      <StartBanner>
+        <StartButton>Start</StartButton>
+      </StartBanner>
+    }
+
     <StyledFooter>
       <InfoBar>
         <InfoBarButton onClick={()=>{navigate(`/user/${userID}/home`)}} className={location.pathname.startsWith(`/user/${userID}/home`) ? 'active' : ""}>
@@ -82,5 +118,5 @@ export default function MobileFooter() {
         </InfoBarButton>
       </InfoBar>
     </StyledFooter>
-  )
+  </>)
 }

@@ -12,6 +12,8 @@ const Wrapper = styled.div`
   flex-direction: column;
 
   gap: 2vh;
+
+  padding-bottom: 20vh;
 `
 
 const PlanBanner = styled.div`
@@ -46,11 +48,24 @@ const StartButton = styled.button`
 `
 
 const SummaryBanner = styled.div`
-  
+  border: 1px solid #E3E4E6;
+  border-radius: 20px;
+  box-shadow: 0 2px 12px rgba(67,137,162,0.08);
+  padding: 5vw;
+
+  &.pros {
+    color: white;
+    background: linear-gradient(160deg, #20B2AA 0%, #40E0D0 100%);
+  }
 `
 
 const SummaryTitle = styled.div`
-  
+  color: #20b2aa;
+  font-weight: bold;
+
+  &.pros {
+    color: white;
+  }
 `
 
 const SummaryBody = styled.div`
@@ -66,24 +81,44 @@ export default function PlanSummary() {
     <PlanBanner>
       <PlanTitle>Full Body</PlanTitle>
     </PlanBanner>
-    <StartBanner>
-      <StartButton>
-        Start
-      </StartButton>
-    </StartBanner>
-
     <SummaryBanner>
       <SummaryTitle>
         Is full body for you?
       </SummaryTitle>
       <SummaryBody>
-        <div>1. You can only workout 2-3 times a week</div>
-        <div>2. You do not have the time to work on individual body parts</div>
+        <ul>
+          <li>You can only workout 2-3 times a week</li>
+          <li>You do not have the time to work on individual body parts</li>
+        </ul>
 
-        <div>TL;DR You are busy and/or do not have the time</div>
+      </SummaryBody>
+    </SummaryBanner>
+    <SummaryBanner className="pros">
+      <SummaryTitle className='pros'>
+        Pros
+      </SummaryTitle>
+      <SummaryBody>
+        <ul>
+          <li>Low time commitment - upwards from 1-5 sessions a week</li>
+          <li>Missing workouts is <i>less</i> damaging to progress because you already trained the muscle group during the week</li>
+          <li>Less decisions about what to do in the gym - e.g. is it leg day?</li>
+          <li>Less thinking = easier to start and stick to</li>
+        </ul>
+      </SummaryBody>
+    </SummaryBanner>
+    <SummaryBanner>
+      <SummaryTitle>
+        Cons
+      </SummaryTitle>
+      <SummaryBody>
+        <ul>
+          <li> <i>Less</i> training volume for each body part per workout</li>
+          <li> Not able to focus on lagging body parts</li>
+          <li> <i>More</i> time spent working out per session</li>
+        </ul>
       </SummaryBody>
     </SummaryBanner>
   </Wrapper>
-  <MobileFooter />
+  <MobileFooter planName={workout}/>
   </>)
 }
