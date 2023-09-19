@@ -17,24 +17,24 @@ import Login from '../pages/Login.tsx'
 import SavedWorkouts from '../pages/SavedWorkouts.tsx'
 import CreateWorkout from '../pages/CreateWorkout.tsx'
 
+import PlanSummary from '../pages/PlanSummary.tsx'
+
 export default function Site() {
   return (
     <>
       <Routes>
-        <Route path = '/' element = {<Landing/>}/>
-        <Route path = '/userDiscovery' element={<UserDiscovery/>}/>
-
-        <Route path ='/:userID/template/FullBody' element={<FullBody/>}/>
-
-        <Route path = '/:userID/savedWorkouts' element={<SavedWorkouts/>}/>
-        <Route path = '/:userID/createWorkout' element={<CreateWorkout/>}/>
-        <Route path = '/:userID/Plans' element = {<Plans/>}/>
-        <Route path = '/:userID/Forums' element = {<Forums/>}/>
-        <Route path = '/:userID/Activity' element = {<Activity/>}/>
-        <Route path = '/:userID/home' element = {<Home/>}/>
-
-        <Route path = '/signup' element={<Signup/>}/>
-        <Route path = '/login' element={<Login/>}/>
+        <Route path='/' element={<Landing />} />
+        <Route path='/userDiscovery' element={<UserDiscovery />} />
+        <Route path='/user/:userID/template/FullBody' element={<FullBody />} />
+        <Route path='/user/:userID/savedWorkouts' element={<SavedWorkouts />} />
+        <Route path='/user/:userID/createWorkout' element={<CreateWorkout />} />
+        <Route path='/user/:userID/Plans' element={<Plans />} />
+        <Route path='/user/:userID/Forums' element={<Forums />} />
+        <Route path='/user/:userID/Activity' element={<Activity />} />
+        <Route path='/user/:userID/home' element={<Home />} />
+        <Route path='/user/:userID/plan/summary/:workout' element={<PlanSummary />} />
+        <Route path='/signup' element={<Signup />} />
+        <Route path='/login' element={<Login />} />
       </Routes>
     </>
   )

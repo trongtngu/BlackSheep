@@ -129,7 +129,7 @@ export default function Plans() {
   const handleRouting = (templateName: string) => {
     const templateRoute = templateName.replace(/ /g, "")
 
-    navigate(`/${userID}/template/${templateRoute}`)
+    navigate(`/user/${userID}/plan/summary/${templateRoute}`)
   }
   return (
   <>

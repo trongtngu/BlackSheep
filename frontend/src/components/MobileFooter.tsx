@@ -60,23 +60,23 @@ export default function MobileFooter() {
   return (
     <StyledFooter>
       <InfoBar>
-        <InfoBarButton onClick={()=>{navigate(`/${userID}/home`)}} className={location.pathname.startsWith(`/${userID}/home`) ? 'active' : ""}>
+        <InfoBarButton onClick={()=>{navigate(`/user/${userID}/home`)}} className={location.pathname.startsWith(`/user/${userID}/home`) ? 'active' : ""}>
           <HomeIcon/>
           <div>Home</div>
         </InfoBarButton>
-        <InfoBarButton onClick={()=>{navigate(`/${userID}/plans`)}} className={location.pathname.startsWith(`/${userID}/plans`) ? 'active' : ""}>
+        <InfoBarButton onClick={()=>{navigate(`/user/${userID}/plans`)}} className={location.pathname.startsWith(`/user/${userID}/plans`) ? 'active' : ""}>
           <ArticleIcon/>
           <div>Plans</div>
         </InfoBarButton>
-        <InfoBarButton onClick={()=>{navigate(`/${userID}/savedWorkouts`)}} className={location.pathname.startsWith(`/${userID}/savedWorkouts`) ? 'active' : ""}>
+        <InfoBarButton onClick={()=>{navigate(`/user/${userID}/savedWorkouts`)}} className={location.pathname.startsWith(`/user/${userID}/savedWorkouts`) ? 'active' : ""}>
           <FitnessCenterIcon/>
           <div>Workout</div>
         </InfoBarButton>
-        <InfoBarButton onClick={()=>{navigate(`/${userID}/forums`)}} className={location.pathname.startsWith(`/${userID}/forums`) ? 'active' : ""}>
+        <InfoBarButton onClick={()=>{navigate(`/user/${userID}/forums`)}} className={location.pathname.startsWith(`/user/${userID}/forums`) ? 'active' : ""}>
           <PeopleIcon/>
           <div>Forums</div>
         </InfoBarButton>
-        <InfoBarButton onClick={()=>{navigate(`/${userID}/activity`)}} className={location.pathname.startsWith(`/${userID}/activity`) ? 'active' : ""}>
+        <InfoBarButton onClick={()=>{navigate(`/user/${userID}/activity`)}} className={location.pathname.startsWith(`/user/${userID}/activity`) ? 'active' : ""}>
           <AnalyticsIcon/>
           <div>Activity</div>
         </InfoBarButton>

@@ -126,7 +126,7 @@ export default function Login() {
       
       console.log("Login Success", data)
 
-      navigate(`/userID:${data.userID}/home`)
+      navigate(`/user/${data.userID}/home`)
 
     } catch (error) {
       console.error(error)
