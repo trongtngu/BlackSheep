@@ -9,10 +9,14 @@ app.use(express.json());
 
 
 // Only runs if database does not already exist
-if (!fs.existsSync("./db/papaya.db")) {
-  initializeDatabase()
-  console.log("Database initialised")
-}
+fs.access('./db/papaya.db', fs.constants.F_OK, (err) => {
+    if (err) {
+      initializeDatabase();
+      console.log("DB Initialised")
+    } else {
+      console.log('DB exists - did not initialise');
+    }
+});
 
 app.get('/', (req: Request, res: Response) => {
   res.json('Hello World')
@@ -162,6 +166,43 @@ app.post('/api/user/login', async (req, res) =>{
 
 /**USER PLANS */
 
+app.get("/api/templates/:templateID", (req, res) => {
+  const db: sqlite3.Database = new sqlite3.Database("./db/papaya.db");
+  
+  const targetTemplateID = req.params.templateID;
+
+  try {
+    const query = `
+      SELECT duration, programLevel, minimumDaysCommitment FROM base_template_info
+      WHERE templateID = (?)
+    `;
+
+    type infoRow = {
+      duration: string;
+      programLevel: string;
+      minimumDaysCommitment: string;
+    }
+
+    db.get(query, [targetTemplateID], async (err: Error | null, row: infoRow) =>{
+      db.close();
+      if (err) {
+        console.error("Database Error:", err);  // Log the actual error
+        res.status(500).send({error: "Could not find template info"});
+        return;
+      } else if (!row) {
+        res.status(404).send({error: "Template not found"});
+        return;
+      } else {
+        res.status(200).send(row);
+      }
+      
+    })
+  } catch (err) {
+    res.status(500).send({error: "Could not fetch templates"})
+  }
+  
+}) 
+
 app.get("/api/templates", (req, res) => {
   const db: sqlite3.Database = new sqlite3.Database("./db/papaya.db");
   console.log("I RAN")
@@ -186,3 +227,4 @@ app.get("/api/templates", (req, res) => {
 app.listen(3000, ()=> {
     console.log("Server running on http://localhost:3000/")
 })
+

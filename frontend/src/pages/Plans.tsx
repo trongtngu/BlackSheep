@@ -98,6 +98,7 @@ const PlansCardTag = styled.div`
 type Template = {
   templateName: string;
   templateDetails: string;
+  id: number;
 }
 export default function Plans() {
 
@@ -126,10 +127,8 @@ export default function Plans() {
   },[])
 
   const { userID } = useParams();
-  const handleRouting = (templateName: string) => {
-    const templateRoute = templateName.replace(/ /g, "")
-
-    navigate(`/user/${userID}/plan/summary/${templateRoute}`)
+  const handleRouting = (id: number) => {
+    navigate(`/user/${userID}/plan/summary/${id}`)
   }
   return (
   <>
@@ -144,7 +143,7 @@ export default function Plans() {
       <PlansCardContainer>
         {templates.map((item, idx)=>{
           return(
-          <PlansCard key={idx} onClick={()=>{handleRouting(`${item.templateName}`)}}>
+          <PlansCard key={idx} onClick={()=>{handleRouting(item.id)}}>
             <PlansCardImage>
               {item.templateName}
             </PlansCardImage>

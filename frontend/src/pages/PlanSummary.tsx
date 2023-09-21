@@ -2,6 +2,10 @@ import React from 'react'
 import Navbar from '../components/Navbar'
 import MobileFooter from '../components/MobileFooter'
 import styled from 'styled-components'
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import FlagIcon from '@mui/icons-material/Flag';
 
 import {useParams} from 'react-router-dom'
 const Wrapper = styled.div`
@@ -28,25 +32,6 @@ const PlanTitle = styled.div`
   text-align: center;
 `
 
-const StartBanner = styled.div`
-
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`
-const StartButton = styled.button`
-  border: 0;
-  border-radius: 5px;
-
-  color: white;
-  background: linear-gradient(160deg, #20B2AA 0%, #40E0D0 100%);
-
-  font-size: 1rem;
-
-  padding: 1vh 10vw 1vh 10vw;
-`
-
 const SummaryBanner = styled.div`
   border: 1px solid #E3E4E6;
   border-radius: 20px;
@@ -56,6 +41,13 @@ const SummaryBanner = styled.div`
   &.pros {
     color: white;
     background: linear-gradient(160deg, #20B2AA 0%, #40E0D0 100%);
+  }
+
+  &.short {
+    border: 0;
+    border-radius: 0;
+    box-shadow: 0 0 0 0;
+    padding: 0;
   }
 `
 
@@ -72,25 +64,57 @@ const SummaryBody = styled.div`
   
 `
 
+const IconBox = styled.div`
+  display: flex;
+  align-items: flex-start;
+
+  padding: 1vw;
+
+  gap: 2vw;
+
+  font-size: 1rem;
+`
+
+interface WorkoutInfo {
+  id: number;
+  templateID: number;
+  duration: string;
+  programLevel: string;
+  minimumDaysCommitment: string;
+}
 export default function PlanSummary() {
 
   const {userID, workout} = useParams();
+  const [workoutInfo, setWorkoutInfo] = React.useState<WorkoutInfo | null>(null)
+  const getWorkoutInfo = async () => {
+
+    const id = 1;
+    try {
+      const response = await fetch(`/api/templates/${id}`);
+
+      const data = await response.json();
+
+      setWorkoutInfo(data)
+    } catch (err) {
+      console.error("Error fetching workout info", err)
+    }
+  }
+
+  React.useEffect(()=>{
+    getWorkoutInfo()
+  })
   return (<>
   <Navbar />
   <Wrapper>
     <PlanBanner>
       <PlanTitle>Full Body</PlanTitle>
     </PlanBanner>
-    <SummaryBanner>
-      <SummaryTitle>
-        Is full body for you?
-      </SummaryTitle>
-      <SummaryBody>
-        <ul>
-          <li>You can only workout 2-3 times a week</li>
-          <li>You do not have the time to work on individual body parts</li>
-        </ul>
-
+    <SummaryBanner className='short'>
+      <SummaryBody className='short'>
+        <IconBox><CalendarTodayIcon/> {workoutInfo && workoutInfo.duration}</IconBox>
+        <IconBox><AccessTimeIcon /> Days per week: {workoutInfo && workoutInfo.minimumDaysCommitment}</IconBox>
+        <IconBox><FlagIcon /> Build muscle</IconBox>
+        <IconBox><FitnessCenterIcon /> Best for: {workoutInfo && workoutInfo.programLevel}</IconBox>
       </SummaryBody>
     </SummaryBanner>
     <SummaryBanner className="pros">

@@ -114,7 +114,7 @@ export default function SavedWorkouts() {
       <div>
         <SavedTitle>
           <div>Saved Workouts</div> 
-          <CreateNewWorkoutButton onClick={()=>{navigate(`/${userID}/createWorkout`)}}>
+          <CreateNewWorkoutButton onClick={()=>{navigate(`/user/${userID}/createWorkout`)}}>
             <AddBoxIcon/>
           </CreateNewWorkoutButton>
         </SavedTitle>

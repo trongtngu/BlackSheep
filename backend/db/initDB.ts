@@ -6,7 +6,13 @@ export const initializeDatabase = () => {
         // Users table
         db.run("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, email TEXT, password TEXT)");
 
-        // Base workouts and exercises tables
+        // Base exercises table
+        db.run("CREATE TABLE IF NOT EXISTS base_exercises (id INTEGER PRIMARY KEY AUTOINCREMENT, exerciseName TEXT, exerciseDetails TEXT)");
+
+        // Base templates table
+        db.run("CREATE TABLE IF NOT EXISTS base_templates (id INTEGER PRIMARY KEY AUTOINCREMENT, templateName TEXT, templateDetails TEXT)");
+
+        // Base workouts table (which references base_templates)
         db.run(`CREATE TABLE IF NOT EXISTS base_workouts (
             id INTEGER PRIMARY KEY AUTOINCREMENT, 
             workoutName TEXT, 
@@ -14,57 +20,99 @@ export const initializeDatabase = () => {
             templateID INTEGER,
             FOREIGN KEY(templateID) REFERENCES base_templates(id)
         )`);
-        db.run("CREATE TABLE IF NOT EXISTS base_exercises (id INTEGER PRIMARY KEY AUTOINCREMENT, exerciseName TEXT, exerciseDetails TEXT)");
-        db.run("CREATE TABLE IF NOT EXISTS base_templates (id INTEGER PRIMARY KEY AUTOINCREMENT, templateName TEXT, templateDetails TEXT)")
 
         // Base workout exercise details table
         db.run(`CREATE TABLE IF NOT EXISTS base_workout_exercise_details (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                workoutID INTEGER,
-                exerciseID INTEGER,
-                sets INTEGER,
-                reps INTEGER,
-                FOREIGN KEY(workoutID) REFERENCES base_workouts(id),
-                FOREIGN KEY(exerciseID) REFERENCES base_exercises(id)
-            )`);
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            workoutID INTEGER,
+            exerciseID INTEGER,
+            sets INTEGER,
+            reps INTEGER,
+            FOREIGN KEY(workoutID) REFERENCES base_workouts(id),
+            FOREIGN KEY(exerciseID) REFERENCES base_exercises(id)
+        )`);
 
         // User workouts table
         db.run(`CREATE TABLE IF NOT EXISTS user_workouts (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                userID INTEGER,
-                baseWorkoutID INTEGER,
-                workoutName TEXT,
-                workoutDetails TEXT,
-                FOREIGN KEY(userID) REFERENCES users(id),
-                FOREIGN KEY(baseWorkoutID) REFERENCES base_workouts(id)
-            )`);
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            userID INTEGER,
+            baseWorkoutID INTEGER,
+            workoutName TEXT,
+            workoutDetails TEXT,
+            FOREIGN KEY(userID) REFERENCES users(id),
+            FOREIGN KEY(baseWorkoutID) REFERENCES base_workouts(id)
+        )`);
 
         // User workout exercises table
         db.run(`CREATE TABLE IF NOT EXISTS user_workout_exercises (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                userWorkoutID INTEGER,
-                exerciseID INTEGER,
-                FOREIGN KEY(userWorkoutID) REFERENCES user_workouts(id),
-                FOREIGN KEY(exerciseID) REFERENCES base_exercises(id)
-            )`);
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            userWorkoutID INTEGER,
+            exerciseID INTEGER,
+            FOREIGN KEY(userWorkoutID) REFERENCES user_workouts(id),
+            FOREIGN KEY(exerciseID) REFERENCES base_exercises(id)
+        )`);
 
         // Workout exercise details table for user-specific details
         db.run(`CREATE TABLE IF NOT EXISTS user_workout_exercise_details (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                userWorkoutExerciseID INTEGER,
-                sets INTEGER,
-                reps INTEGER,
-                FOREIGN KEY(userWorkoutExerciseID) REFERENCES user_workout_exercises(id)
-            )`);
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            userWorkoutExerciseID INTEGER,
+            sets INTEGER,
+            reps INTEGER,
+            FOREIGN KEY(userWorkoutExerciseID) REFERENCES user_workout_exercises(id)
+        )`);
+
+        // Base Template Information table (which references base_templates)
+        db.run(`CREATE TABLE IF NOT EXISTS base_template_info (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, 
+            templateID INTEGER,
+            duration TEXT,
+            programLevel TEXT,
+            minimumDaysCommitment INTEGER,
+            FOREIGN KEY(templateID) REFERENCES base_templates(id)
+        )`);
 
     })
 
-    insert_data_full_body(db)
-    insert_data_pull_day(db)
-    insert_data_push_day(db)
-    insert_data_legs_day(db)
-    db.close()
+    // Inserting data
+    insert_data_full_body(db);
+    insert_data_pull_day(db);
+    insert_data_push_day(db);
+    insert_data_legs_day(db);
+    insert_base_template_info_data(db);
+
+    // Closing the database
+    db.close();
 };
+
+
+const insert_base_template_info_data = (db: sqlite3.Database) => {
+    // Error handler function
+    const handleError = (context: string, err: Error | null) => {
+        if (err) {
+            console.error(`Error ${context}:`, err.message);
+        }
+    };
+
+    // A function to insert template info
+    const insertInfo = (templateName: string, minimumDaysCommitment: number) => {
+        db.get("SELECT id FROM base_templates WHERE templateName = ?", [templateName], (err, row:{id: number}) => {
+            handleError(`fetching ID for ${templateName}`, err);
+            if (row) {
+                const templateId = row.id;
+                db.run("INSERT INTO base_template_info (templateID, duration, programLevel, minimumDaysCommitment) VALUES (?, ?, ?, ?)",
+                    [templateId, '6 weeks', 'All Levels', minimumDaysCommitment],
+                    (err) => {
+                        handleError(`inserting into base_template_info for ${templateName}`, err);
+                    }
+                );
+            }
+        });
+    };
+
+    // Insert info for 'Full Body' and 'Push Pull Legs'
+    insertInfo('Full Body', 1);
+    insertInfo('Push Pull Legs', 3);
+}
 
 const insert_data_full_body = (db: sqlite3.Database) => {
     const exercises: Array<Array<string>> = [
