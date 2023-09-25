@@ -48,6 +48,11 @@ const SummaryBanner = styled.div`
     border-radius: 0;
     box-shadow: 0 0 0 0;
     padding: 0;
+
+    width: 100vw;
+    padding-left: 5vw;
+
+    color: black;
   }
 `
 
