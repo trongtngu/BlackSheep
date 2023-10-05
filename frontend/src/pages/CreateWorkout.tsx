@@ -1,6 +1,7 @@
+import { create } from '@mui/material/styles/createTransitions'
 import React from 'react'
+import {useNavigate, useParams} from 'react-router-dom'
 import styled from 'styled-components'
-import AddIcon from '@mui/icons-material/Add';
 const Wrapper = styled.div`
   display: flex;
   width: 100vw;
@@ -44,78 +45,65 @@ const TemplateCard = styled.div`
   height: 25vh;
 `
 
-const BlankTemplateContainer = styled.div`
-  display: flex;
-  justify-content: center;
-`
-const BlankTemplateTitle = styled.div`
-  display: flex;
-  justify-content: center;
-  font-size: 1.5rem;
-`
-
-const BlankTemplateCard = styled.div`
-  border: 1px solid #E3E4E6;
-  border-radius: 10px;
-  box-shadow: 0 2px 12px rgba(67,137,162,0.08);
-  background: white;
-
-  width: calc(33.33% - 2vw);
-  height: 25vh;
-
-  font-size: 8rem;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
-  color: #20B2AA;
-`
-
+type Template = {
+  id: number,
+  templateName: string,
+  templateDetails: string
+}
 export default function CreateWorkout() {
-  return (<>
-  <Wrapper>
-    <Title>Workout Creator</Title>
-    <TemplatesBanner>
-      <TemplatesBannerTitle>
-        Popular Lifting Templates
-      </TemplatesBannerTitle>
-      <TemplatesContainer>
-        <TemplateCard>
-          PPL
-        </TemplateCard>
-        <TemplateCard>
-          FULL BODY
-        </TemplateCard>
-        <TemplateCard>
-          c25k
-        </TemplateCard>
-      </TemplatesContainer>
-      <TemplatesBannerTitle>
-        Popular Cardio Templates
-      </TemplatesBannerTitle>
-      <TemplatesContainer>
-        <TemplateCard>
-          PPL
-        </TemplateCard>
-        <TemplateCard>
-          FULL BODY
-        </TemplateCard>
-        <TemplateCard>
-          c25k
-        </TemplateCard>
-        
-      </TemplatesContainer>
 
-      <BlankTemplateTitle>
-        From Scratch
-      </BlankTemplateTitle>
-      <BlankTemplateContainer>
-        <BlankTemplateCard>
-          <AddIcon style={{ fontSize: '10vh' }}/>
-        </BlankTemplateCard>
-      </BlankTemplateContainer>
-    </TemplatesBanner>
-  </Wrapper>
+  let navigate = useNavigate()
+  const {userID} = useParams()
+
+  const [templates, setTemplates] = React.useState<Template[]>([])
+
+  const getTemplates = async () => {
+    try {
+      const response = await fetch("/api/templates")
+
+      const data = await response.json()
+
+      setTemplates(data)
+      console.log(data)
+    } catch (error) {
+      console.error("Error getting templates", error)
+    }
+  }
+
+  React.useEffect(() => {
+    getTemplates()
+  }, [])
+
+
+  /** Creating a template workout for the user */
+  const createUserWorkout = async (templateID: number) => {
+    try{
+      const response = await fetch(`/api/createWorkout/${userID}/${templateID}`)
+
+      const data = await response.json()
+      console.log(data)
+
+    } catch (error) {
+      console.error(error)
+    }
+    navigate(`/user/${userID}/savedWorkouts`)
+  }
+  return (<>
+    <Wrapper>
+      <Title>Workout Creator</Title>
+      <TemplatesBanner>
+        <TemplatesBannerTitle>
+          Popular Lifting Templates
+        </TemplatesBannerTitle>
+
+        <TemplatesContainer>
+          {templates.map((template, idx) => (
+            <TemplateCard key={idx} onClick={()=>{createUserWorkout(template.id)}}>
+              {template.templateName}
+            </TemplateCard>
+          ))}
+        </TemplatesContainer>
+      </TemplatesBanner>
+    </Wrapper>
   </>)
 }

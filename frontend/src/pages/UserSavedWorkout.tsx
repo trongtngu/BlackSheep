@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Navbar from '../components/Navbar'
 import ExerciseColumn from '../components/ExerciseColumn';
 import Footer from '../components/MobileFooter';
-
+import {useParams} from 'react-router-dom';
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
@@ -102,7 +102,7 @@ type Workout = {
   reps: number;
 }
 
-export default function FullBody() {
+export default function UserSavedWorkout() {
 
   // Updating styles when workout is completed
   const [completed, setCompleted] = React.useState(false);
@@ -134,7 +134,11 @@ export default function FullBody() {
   // Also used to keep track of completion conditions: all sets done.
   const [workout, setWorkout] = React.useState<Workout[]>([])
   const [workoutName, setWorkoutName] = React.useState<string>("Workout Name")
+
+  const { templateID } = useParams();
+
   const getWorkoutDataById = async (id: number) => {
+    console.log(id)
     try {
       const response: Response = await fetch(`/api/workout/${id}`);
       
@@ -161,7 +165,9 @@ export default function FullBody() {
   }
 
   React.useEffect(()=>{
-    getWorkoutDataById(1)
+    if (templateID != undefined){
+      getWorkoutDataById(parseInt(templateID))
+    }
   },[])
 
   const [today, setToday] = React.useState("01/01/2023")

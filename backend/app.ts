@@ -205,7 +205,6 @@ app.get("/api/templates/:templateID", (req, res) => {
 
 app.get("/api/templates", (req, res) => {
   const db: sqlite3.Database = new sqlite3.Database("./db/papaya.db");
-  console.log("I RAN")
   try {
     const query = `SELECT * FROM base_templates`;
 
@@ -223,7 +222,116 @@ app.get("/api/templates", (req, res) => {
     res.status(500).send({error: "Could not fetch templates"})
   }
   
-}) 
+})
+
+/** User creates a workout using a template */
+app.get("/api/createWorkout/:userID/:templateID", (req, res) => {
+  interface BaseWorkoutExerciseDetail {
+    id: number;
+    workoutID: number;
+    exerciseID: number;
+    sets: number;
+    reps: number;
+  }
+
+  const db: sqlite3.Database = new sqlite3.Database("./db/papaya.db");
+
+  const userID = req.params.userID;
+  const templateID = req.params.templateID;
+
+  try {
+    // 1. Copy base_template to user_templates
+    const copyBaseTemplate = `INSERT INTO user_templates (userID, templateName, templateDetails) 
+                              SELECT ?, templateName, templateDetails FROM base_templates WHERE id = ?`;
+    
+    db.run(copyBaseTemplate, [userID, templateID], function(err) {
+      if (err) {
+        res.status(500).send({error: err.message});
+        return;
+      }
+
+      const userTemplateID = this.lastID;
+
+      // 2. Insert into user_workouts using the new userTemplateID
+      const insertIntoUserWorkouts = `INSERT INTO user_workouts (userID, workoutName, workoutDetails)
+                                     SELECT ?, workoutName, workoutDetails FROM base_workouts WHERE templateID = ?`;
+
+      db.run(insertIntoUserWorkouts, [userID, templateID], function(err) {
+        if (err) {
+          res.status(500).send({error: err.message});
+          return;
+        }
+
+        const userWorkoutID = this.lastID; 
+
+        // 3. Fetch and insert exercises as originally done
+        const fetchExercises = `SELECT * FROM base_workout_exercise_details WHERE workoutID IN (SELECT id FROM base_workouts WHERE templateID = ?)`;
+
+        db.all(fetchExercises, [templateID], (err, rows: BaseWorkoutExerciseDetail[]) => {
+          if (err) {
+            res.status(500).send({error: err.message});
+            return;
+          }
+
+          // Insert exercises into user tables
+          rows.forEach(row => {
+            db.run(`INSERT INTO user_workout_exercises (userWorkoutID, exerciseID) VALUES (?, ?)`,
+                   [userWorkoutID, row.exerciseID], function(err) {
+              if (err) {
+                res.status(500).send({error: err.message});
+                return;
+              }
+
+              const userWorkoutExerciseID = this.lastID; 
+
+              db.run(`INSERT INTO user_workout_exercise_details (userWorkoutExerciseID, sets, reps)
+                      VALUES (?, ?, ?)`, [userWorkoutExerciseID, row.sets, row.reps], (err) => {
+                if (err) {
+                  res.status(500).send({error: err.message});
+                  return;
+                }
+              });
+            });
+          });
+
+          res.status(200).send({success: true, message: "Workout created successfully!"});
+        });
+      });
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({error: "Could not create new template"});
+  } finally {
+    db.close();
+  }
+});
+
+app.get("/api/userTemplates/:userID", (req, res) => {
+  console.log("[REQ] Getting user's templates")
+
+  const userID = req.params.userID;
+  const db = new sqlite3.Database("./db/papaya.db"); // Connect to the database
+
+  try {
+      const query = `SELECT * FROM user_templates WHERE userID = ?`;
+
+      db.all(query, [userID], (err, rows) => {
+          if (err) {
+              throw err;  // Will be caught by the catch block
+          }
+
+          res.status(200).send(rows);  // Send the fetched rows (templates) as response
+      });
+
+  } catch (error) {
+      console.error(error);
+      res.status(500).send({error: "Could not get user's templates"});
+  } finally {
+      db.close();  // Close the database connection
+  }
+});
+
+/** User Creates a new workout using a template */
 app.listen(3000, ()=> {
     console.log("Server running on http://localhost:3000/")
 })

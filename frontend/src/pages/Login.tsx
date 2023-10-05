@@ -133,6 +133,12 @@ export default function Login() {
     }
   }
 
+  const handleEnterKey = (e) =>{
+    if (e.key === 'Enter'){
+      handleLogin();
+    }
+  }
+
   return (
     <>
     <Navbar />
@@ -141,9 +147,9 @@ export default function Login() {
       <LoginTitle>Login</LoginTitle>
       <LoginFieldsContainer>
         <LoginError>{emailError}</LoginError>
-        <LoginField placeholder={"Email"} onChange={(e)=>{setEmail(e.target.value)}}/>
+        <LoginField placeholder={"Email"} onChange={(e)=>{setEmail(e.target.value)}} onKeyDown={handleEnterKey}/>
         <LoginError>{passwordError}</LoginError>
-        <LoginField type = 'password' placeholder={"Password"} onChange={(e)=>{setPassword(e.target.value)}}/>
+        <LoginField type = 'password' placeholder={"Password"} onChange={(e)=>{setPassword(e.target.value)}} onKeyDown={handleEnterKey}/>
       </LoginFieldsContainer>
       <LoginButton onClick={()=>{handleLogin()}}>Log in</LoginButton>
      </LoginBanner>

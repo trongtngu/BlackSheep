@@ -71,6 +71,14 @@ export const initializeDatabase = () => {
             FOREIGN KEY(templateID) REFERENCES base_templates(id)
         )`);
 
+        db.run(`CREATE TABLE IF NOT EXISTS user_templates (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            userID INTEGER,
+            templateName TEXT,
+            templateDetails TEXT,
+            FOREIGN KEY(userID) REFERENCES users(id)
+        )`);
+
     })
 
     // Inserting data

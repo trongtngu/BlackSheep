@@ -1,11 +1,11 @@
-import React from 'react'
 import styled from 'styled-components'
 import Navbar from '../components/Navbar'
 import MobileFooter from '../components/MobileFooter'
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import React from 'react';
 
-import {useNavigate, useParams} from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const Wrapper = styled.div`
 
@@ -103,66 +103,68 @@ const SavedWorkoutCardSettings = styled.div`
 
   color: inherit;
 `
+
+interface UserTemplate {
+  id: number;
+  userID: number;
+  templateName: string;
+  templateDetails: string;
+}
 export default function SavedWorkouts() {
 
   const navigate = useNavigate()
   const { userID } = useParams();
 
+  const [savedTemplates, setSavedTemplates] = React.useState<UserTemplate[]>([])
+
+  const getUserWorkouts = async () => {
+    try {
+      const response = await fetch(`/api/userTemplates/${userID}`)
+
+      const data = await response.json()
+
+      console.log(JSON.stringify(data))
+      setSavedTemplates(data)
+    }
+
+    catch (err) {
+      console.error(err)
+    }
+  }
+
+  React.useEffect(() => {
+    getUserWorkouts()
+  }, [])
   return (<>
     <Navbar />
     <Wrapper>
       <div>
         <SavedTitle>
-          <div>Saved Workouts</div> 
-          <CreateNewWorkoutButton onClick={()=>{navigate(`/user/${userID}/createWorkout`)}}>
-            <AddBoxIcon/>
+          <div>Saved Workouts</div>
+          <CreateNewWorkoutButton onClick={() => { navigate(`/user/${userID}/createWorkout`) }}>
+            <AddBoxIcon />
           </CreateNewWorkoutButton>
         </SavedTitle>
       </div>
 
       <SavedBanner>
-        <SavedWorkoutCard>
-          <SavedWorkoutCardLogo>🐑</SavedWorkoutCardLogo>
-          <SavedWorkoutCardInfo>
-            <SavedWorkoutCardInfoTitle>
-              Full Body
-            </SavedWorkoutCardInfoTitle>
-            <SavedWorkoutCardInfoDate>
-              last opened: 15/09/2023
-            </SavedWorkoutCardInfoDate>
-          </SavedWorkoutCardInfo>
-          <SavedWorkoutCardSettings>
-            <MoreHorizIcon />
-          </SavedWorkoutCardSettings>
-        </SavedWorkoutCard>
-        <SavedWorkoutCard>
-          <SavedWorkoutCardLogo>🐑</SavedWorkoutCardLogo>
-          <SavedWorkoutCardInfo>
-            <SavedWorkoutCardInfoTitle>
-              C25K
-            </SavedWorkoutCardInfoTitle>
-            <SavedWorkoutCardInfoDate>
-              last opened: 04/09/2023
-            </SavedWorkoutCardInfoDate>
-          </SavedWorkoutCardInfo>
-          <SavedWorkoutCardSettings>
-            <MoreHorizIcon />
-          </SavedWorkoutCardSettings>
-        </SavedWorkoutCard>
-        <SavedWorkoutCard>
-          <SavedWorkoutCardLogo>🐑</SavedWorkoutCardLogo>
-          <SavedWorkoutCardInfo>
-            <SavedWorkoutCardInfoTitle>
-              PPL
-            </SavedWorkoutCardInfoTitle>
-            <SavedWorkoutCardInfoDate>
-              last opened: 11/08/2023
-            </SavedWorkoutCardInfoDate>
-          </SavedWorkoutCardInfo>
-          <SavedWorkoutCardSettings>
-            <MoreHorizIcon />
-          </SavedWorkoutCardSettings>
-        </SavedWorkoutCard>
+        {savedTemplates.map((template) => (
+          <SavedWorkoutCard onClick={() => navigate(`/user/${userID}/savedWorkouts/${template.id}`)}>
+            <SavedWorkoutCardLogo>🐑</SavedWorkoutCardLogo>
+            <SavedWorkoutCardInfo>
+              <SavedWorkoutCardInfoTitle>
+                {template.templateName}
+              </SavedWorkoutCardInfoTitle>
+              <SavedWorkoutCardInfoDate>
+                last opened: 15/09/2023
+              </SavedWorkoutCardInfoDate>
+            </SavedWorkoutCardInfo>
+            <SavedWorkoutCardSettings>
+              <MoreHorizIcon />
+            </SavedWorkoutCardSettings>
+          </SavedWorkoutCard>
+        ))}
+
       </SavedBanner>
     </Wrapper>
     <MobileFooter />
