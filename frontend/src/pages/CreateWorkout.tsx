@@ -86,7 +86,7 @@ export default function CreateWorkout() {
     } catch (error) {
       console.error(error)
     }
-    navigate(`/user/${userID}/savedWorkouts`)
+    navigate(`/user/${userID}/savedTemplates`)
   }
   return (<>
     <Wrapper>

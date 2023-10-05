@@ -104,7 +104,7 @@ export default function MobileFooter({ planName }: MobileFooterProps) {
           <ArticleIcon/>
           <div>Plans</div>
         </InfoBarButton>
-        <InfoBarButton onClick={()=>{navigate(`/user/${userID}/savedWorkouts`)}} className={location.pathname.startsWith(`/user/${userID}/savedWorkouts`) ? 'active' : ""}>
+        <InfoBarButton onClick={()=>{navigate(`/user/${userID}/savedTemplates`)}} className={location.pathname.startsWith(`/user/${userID}/savedTemplates`) ? 'active' : ""}>
           <FitnessCenterIcon/>
           <div>Workout</div>
         </InfoBarButton>

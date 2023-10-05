@@ -36,11 +36,11 @@ export const initializeDatabase = () => {
         db.run(`CREATE TABLE IF NOT EXISTS user_workouts (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             userID INTEGER,
-            baseWorkoutID INTEGER,
+            userTemplateID INTEGER,
             workoutName TEXT,
             workoutDetails TEXT,
             FOREIGN KEY(userID) REFERENCES users(id),
-            FOREIGN KEY(baseWorkoutID) REFERENCES base_workouts(id)
+            FOREIGN KEY(userTemplateID) REFERENCES user_templates(id)
         )`);
 
         // User workout exercises table

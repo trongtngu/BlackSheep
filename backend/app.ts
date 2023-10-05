@@ -164,8 +164,7 @@ app.post('/api/user/login', async (req, res) =>{
   }
 })
 
-/**USER PLANS */
-
+/**BASE PLANS */
 app.get("/api/templates/:templateID", (req, res) => {
   const db: sqlite3.Database = new sqlite3.Database("./db/papaya.db");
   
@@ -224,8 +223,9 @@ app.get("/api/templates", (req, res) => {
   
 })
 
-/** User creates a workout using a template */
+/** USER TEMPLATES */
 app.get("/api/createWorkout/:userID/:templateID", (req, res) => {
+
   interface BaseWorkoutExerciseDetail {
     id: number;
     workoutID: number;
@@ -253,10 +253,10 @@ app.get("/api/createWorkout/:userID/:templateID", (req, res) => {
       const userTemplateID = this.lastID;
 
       // 2. Insert into user_workouts using the new userTemplateID
-      const insertIntoUserWorkouts = `INSERT INTO user_workouts (userID, workoutName, workoutDetails)
-                                     SELECT ?, workoutName, workoutDetails FROM base_workouts WHERE templateID = ?`;
+      const insertIntoUserWorkouts = `INSERT INTO user_workouts (userID, userTemplateID, workoutName, workoutDetails)
+                                     SELECT ?, ?, workoutName, workoutDetails FROM base_workouts WHERE templateID = ?`;
 
-      db.run(insertIntoUserWorkouts, [userID, templateID], function(err) {
+      db.run(insertIntoUserWorkouts, [userID, userTemplateID, templateID], function(err) {
         if (err) {
           res.status(500).send({error: err.message});
           return;
@@ -305,6 +305,31 @@ app.get("/api/createWorkout/:userID/:templateID", (req, res) => {
     db.close();
   }
 });
+
+app.get("/api/userWorkouts/:userID/template/:templateID", (req, res) => {
+  console.log("[REQ] Getting User template Details")
+
+  const userID = req.params.userID;
+  const templateID = req.params.templateID;
+  const db = new sqlite3.Database("./db/papaya.db");
+
+  try {
+    const query = `SELECT * FROM user_workouts WHERE userID = ${userID} and userTemplateID =${templateID}`;
+
+    db.all(query, (err: Error | null, rows: Array<any>) => {
+      db.close();
+  
+      if (err) {
+        res.status(500).send({error: err.message})
+        return;
+      }
+  
+      res.status(200).send(rows)
+    })
+  } catch (err) {
+    res.status(500).send({error: "Could not fetch templates"})
+  }
+})
 
 app.get("/api/userTemplates/:userID", (req, res) => {
   console.log("[REQ] Getting user's templates")

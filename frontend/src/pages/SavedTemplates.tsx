@@ -123,7 +123,7 @@ export default function SavedWorkouts() {
 
       const data = await response.json()
 
-      console.log(JSON.stringify(data))
+      // console.log(JSON.stringify(data))
       setSavedTemplates(data)
     }
 
@@ -148,8 +148,8 @@ export default function SavedWorkouts() {
       </div>
 
       <SavedBanner>
-        {savedTemplates.map((template) => (
-          <SavedWorkoutCard onClick={() => navigate(`/user/${userID}/savedWorkouts/${template.id}`)}>
+        {savedTemplates.map((template, idx) => (
+          <SavedWorkoutCard key ={idx} onClick={() => navigate(`/user/${userID}/savedTemplates/${template.id}`)}>
             <SavedWorkoutCardLogo>🐑</SavedWorkoutCardLogo>
             <SavedWorkoutCardInfo>
               <SavedWorkoutCardInfoTitle>

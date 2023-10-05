@@ -14,11 +14,11 @@ import Home from '../pages/Home.tsx'
 
 import Signup from '../pages/Signup.tsx'
 import Login from '../pages/Login.tsx'
-import SavedWorkouts from '../pages/SavedWorkouts.tsx'
+import SavedTemplates from '../pages/SavedTemplates.tsx'
 import CreateWorkout from '../pages/CreateWorkout.tsx'
 
 import PlanSummary from '../pages/PlanSummary.tsx'
-import UserSavedWorkout from '../pages/UserSavedWorkout.tsx'
+import UserSavedTemplates from '../pages/UserSavedTemplate.tsx'
 
 export default function Site() {
   return (
@@ -26,9 +26,9 @@ export default function Site() {
       <Routes>
         <Route path='/' element={<Landing />} />
         <Route path='/userDiscovery' element={<UserDiscovery />} />
-        <Route path='/user/:userID/savedWorkouts/:templateID' element={<UserSavedWorkout />} />
+        <Route path='/user/:userID/savedTemplates/:templateID' element={<UserSavedTemplates />} />
         <Route path='/user/:userID/template/FullBody' element={<FullBody />} />
-        <Route path='/user/:userID/savedWorkouts' element={<SavedWorkouts />} />
+        <Route path='/user/:userID/savedTemplates' element={<SavedTemplates />} />
         <Route path='/user/:userID/createWorkout' element={<CreateWorkout />} />
         <Route path='/user/:userID/Plans' element={<Plans />} />
         <Route path='/user/:userID/Forums' element={<Forums />} />

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Navbar from '../components/Navbar'
 import ExerciseColumn from '../components/ExerciseColumn';
 import Footer from '../components/MobileFooter';
-import {useParams} from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
@@ -95,6 +95,27 @@ const CompleteButton = styled.div`
   }
 `
 
+const WorkoutButtonContainer = styled.div`
+  display: flex;
+  gap: 1vw;
+  width: 90vw;
+`
+
+const WorkoutButton = styled.div`
+
+  background: linear-gradient(160deg, #20B2AA 0%, #40E0D0 100%);
+  color: white;
+
+  padding: 0vh 4vw 0vh 4vw;
+  border-radius: 1vw;
+
+  height: 4vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
 type Workout = {
   workout_name: string;
   exercise_name: string;
@@ -108,7 +129,7 @@ export default function UserSavedWorkout() {
   const [completed, setCompleted] = React.useState(false);
   const [currentNumSets, setCurrentNumSets] = React.useState<number>(0);
   const [totalNumSets, setTotalNumSets] = React.useState<number>(0)
-  
+
   // Passed as a callback to each ExerciseColumn to pass onto the children boxes.
   // updates the state variable to keep track of number of completed sets against
   // the number of sets currently.
@@ -135,20 +156,18 @@ export default function UserSavedWorkout() {
   const [workout, setWorkout] = React.useState<Workout[]>([])
   const [workoutName, setWorkoutName] = React.useState<string>("Workout Name")
 
-  const { templateID } = useParams();
+  const { userID, templateID } = useParams();
 
   const getWorkoutDataById = async (id: number) => {
-    console.log(id)
     try {
       const response: Response = await fetch(`/api/workout/${id}`);
-      
-      if(!response.ok) {
+
+      if (!response.ok) {
         throw new Error("Fetch Error")
       }
 
       const data = await response.json();
 
-      console.log(data)
       setWorkout(data)
       setWorkoutName(data[0].workout_name)
 
@@ -158,17 +177,41 @@ export default function UserSavedWorkout() {
       }
 
       setTotalNumSets(totalSets)
-      
+
     } catch (error) {
       console.error(error)
     }
   }
 
-  React.useEffect(()=>{
-    if (templateID != undefined){
-      getWorkoutDataById(parseInt(templateID))
+  type WorkoutNumbers = {
+    id: number;
+    userID: number;
+    workoutDetails: string;
+    workoutName: string;
+  }
+
+  const [workoutList, setWorkoutList] = React.useState<WorkoutNumbers[]>([])
+  const getUserWorkoutsByTemplate = async (templateID: number) => {
+    try {
+      const response = await fetch(`/api/userWorkouts/${userID}/template/${templateID}`)
+
+      const data = await response.json()
+
+      console.log(data)
+      setWorkoutList(data)
+    } catch (error) {
+      console.error("Error getting user template by ID")
     }
-  },[])
+  }
+
+  React.useEffect(() => {
+    // if (templateID != undefined){
+    //   getWorkoutDataById(parseInt(templateID))
+    // }
+    if (templateID != undefined) {
+      getUserWorkoutsByTemplate(parseInt(templateID))
+    }
+  }, [])
 
   const [today, setToday] = React.useState("01/01/2023")
   const getToday = () => {
@@ -188,45 +231,49 @@ export default function UserSavedWorkout() {
 
   return (
     <>
-    <Navbar/>
-    <Wrapper>
-      <PageTitle>
-        Workout
-      </PageTitle>
-      <TitleBanner>
-        <Title>
-          {workoutName}
-        </Title>
-      </TitleBanner>
+      <Navbar />
+      <Wrapper>
+        <PageTitle>
+          Workout
+        </PageTitle>
+        <TitleBanner>
+          <Title>
+            {workoutName}
+          </Title>
+        </TitleBanner>
+        <WorkoutButtonContainer>
+          {workoutList.map((w, idx) => (
+            <WorkoutButton key={idx} onClick={()=>{getWorkoutDataById(w.id)}}>{w.workoutName}</WorkoutButton>
+          ))}
+        </WorkoutButtonContainer>
+        <SpreadsheetBanner>
+          <SpreadsheetTitle>
+            {today}
+          </SpreadsheetTitle>
 
-      <SpreadsheetBanner>
-        <SpreadsheetTitle>
-          {today}
-        </SpreadsheetTitle>
-
-        <SpreadsheetContainer>
-          {
-            workout.map((exercise, idx) => {
-              return (
-              <ExerciseColumn
-                key = {idx}
-                name={exercise.exercise_name} 
-                sets={exercise.sets} 
-                reps={exercise.reps}
-                callback={handleSetClick}
-              />
-              )
-            })
-          }
-        </SpreadsheetContainer>
-      </SpreadsheetBanner>
-      <CompleteBanner>
-        <CompleteButton className={completed? 'completed' : ''}>
-          complete
-        </CompleteButton>
-      </CompleteBanner>
-    </Wrapper>
-    <Footer />     
+          <SpreadsheetContainer>
+            {
+              workout.map((exercise, idx) => {
+                return (
+                  <ExerciseColumn
+                    key={idx}
+                    name={exercise.exercise_name}
+                    sets={exercise.sets}
+                    reps={exercise.reps}
+                    callback={handleSetClick}
+                  />
+                )
+              })
+            }
+          </SpreadsheetContainer>
+        </SpreadsheetBanner>
+        <CompleteBanner>
+          <CompleteButton className={completed ? 'completed' : ''}>
+            complete
+          </CompleteButton>
+        </CompleteBanner>
+      </Wrapper>
+      <Footer />
     </>
   )
 }
